@@ -1,0 +1,11 @@
+{
+  "name": "p6_gaba_yves",
+  "version": "1.0.0",
+  "description": "",
+  "main": "photographers.js",
+  "scripts": {
+    "sass": "sass --watch scss:Css"
+  },
+  "author": "",
+  "license": "ISC"
+}

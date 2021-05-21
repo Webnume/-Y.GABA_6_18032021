@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+$h2color:#D3573C; 
+$h1color:#901C1C;
+$grey: #757575;
+
+@mixin liStyle {
+  & ul {
+    list-style: none;
+    margin: 0.5rem;
+    padding: 0;
+    & li {
+      display: inline-block;
+      margin: 0.2rem;
+      border: 1px solid $grey;
+      border-radius: 2rem;
+      padding: 0.1rem 0.2rem;
+      color: $h1color;
+      font-weight: 700;
+      font-size: 12px;  
+      cursor: pointer;
+    }
+  }
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  font-family: DM Sans;
+  min-width: 370px;
+  @media (max-width:1265px){
+    width:90%;
+  }
+}
+header{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+  width: 87%;
+  & img {
+    width:200px;
+    height: 50px;  
+    cursor: pointer;
+    @media (max-width:1290px){
+      width:150px;
+      height: 37.5px;
+    }
+  }
+  & nav {
+    @include liStyle();
+    @media (max-width:999px){
+      margin-top: 2rem;
+    }
+  }
+}
+
+  
+main {
+  width: 100%;
+  & h1{
+    color: $h1color;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 47px;
+    position: absolute;
+    right:0;
+    top: 0.2rem;
+    @media (max-width:1407px){
+      right:0;
+      top:0.6rem;
+      font-size: 1.6rem;
+    }
+    @media (max-width:1110px){
+      right: 20px;
+      top: 1rem;
+      font-size: 14px;
+    }
+  }
+  & > section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    @media (max-width:1024px){
+      flex-direction: column;
+    }
+  }
+}
+article {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 33%;
+  margin-bottom: 10vh;
+  align-items: center;
+  @media (max-width:1024px){
+    width:100%;
+  }
+  & div{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 2rem;
+    background-position: center;
+    background-size: cover;  
+    cursor: pointer;
+  }
+  & h2{
+    color: $h2color;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 47px;
+    margin: 0;
+    cursor: pointer;
+    }
+  & p{
+    margin: 0;
+    &:nth-child(3){
+      color: $h1color;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 17px;
+      letter-spacing: 0em;
+    }
+    &:nth-child(4){
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 13px;
+      letter-spacing: 0em;
+    }
+    &:nth-child(5){
+      color: $grey;
+      font-size: 9px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 12px;
+      letter-spacing: 0em;
+    }
+  }
+  @include liStyle();
+}
