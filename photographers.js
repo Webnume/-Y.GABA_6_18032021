@@ -18,7 +18,7 @@ request.onload = function() {
 
 function headerImplement(jsonObj) {
   var myImg = document.createElement('img');
-  myImg.src = "./images/logo_fishEye.svg";
+  myImg.src = "./images/logo_FishEye.svg";
   header.appendChild(myImg);
 
   var myPara = document.createElement('nav');
