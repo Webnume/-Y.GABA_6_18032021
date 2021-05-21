@@ -1,7 +1,6 @@
 //DOM selection
 var header = document.querySelector('header');
 var section = document.querySelector('section');
-var tagsTopMenu = [];
 
 var requestURL = 'FishEyeData.json';
 var request = new XMLHttpRequest();
@@ -12,15 +11,18 @@ request.send();
 request.onload = function() {
   var photographersText = request.response; // get the string from the response
   var Photographers = JSON.parse(photographersText); // convert it to an object
-  showPhotographers(Photographers);
   headerImplement(Photographers);
+  showPhotographers(Photographers);
 }
 
 function headerImplement(jsonObj) {
   var myImg = document.createElement('img');
   myImg.src = "./images/logo_FishEye.svg";
   header.appendChild(myImg);
-
+    // Changement de page selon Id
+    myImg.addEventListener('click', event => {
+        window.location.href = "index.html";
+      })
   var myPara = document.createElement('nav');
   // myPara.textContent = tagsTopMenu.map(x => " #"+x);
   myPara.innerHTML = "<ul><li>#Portrait</li><li>#Art</li><li>#Fashion</li><li>#Architecture</li><li>#Travel</li><li>#Sport</li><li>#Animals</li><li>#Events</li></ul>";
@@ -74,7 +76,8 @@ function showPhotographers(jsonObj) {
     
     myPara0.style.backgroundImage='url(./images/'+zeroSpace+'/'+homePicture+')';
     myPara0.setAttribute("alt","photo de "+photographers[i].name); 
-
+    myPara0.setAttribute("id", photographers[i].id); 
+    myH2.setAttribute("id", photographers[i].id); 
     myH2.textContent = photographers[i].name;
     myPara1.textContent = photographers[i].city+", "+photographers[i].country;
     myPara2.textContent = photographers[i].tagline;
@@ -86,11 +89,6 @@ function showPhotographers(jsonObj) {
       var listItem = document.createElement('li');
       listItem.textContent = "#"+tags[j]+" ";
       myList.appendChild(listItem);
-
-      if(!(tagsTopMenu.includes(tags[j]))){
-        tagsTopMenu.push(tags[j])
-      }
-
     }
     myArticle.appendChild(myPara0);
     myArticle.appendChild(myH2);
@@ -100,15 +98,23 @@ function showPhotographers(jsonObj) {
     myArticle.appendChild(myList);
 
     section.appendChild(myArticle);
+
+    // Changement de page selon Id
+    [myPara0, myH2].forEach(item => {
+      item.addEventListener('click', event => {
+        window.location.href = "photographer.html?id="+event.target.id;
+      })
+    })
+
+
+
   }
 }
 
+    //handle clicks
 
-var requestURL = 'FishEyeData.json';
-var request = new XMLHttpRequest();
-request.open('GET', requestURL);
-request.responseType = 'text'; // now we're getting a string!
-request.send();
+
+
 
 
 
@@ -129,12 +135,6 @@ request.send();
   
 //   document
 //     cardDisplay.addEventListener("click", getJson);
-request.onload = function() {
-  var photographersText = request.response; // get the string from the response
-  var Photographers = JSON.parse(photographersText); // convert it to an object
-  showPhotographers(Photographers);
-  headerImplement(Photographers);
-}
 
 
 
