@@ -1,4 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap");
+a {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 body {
   position: relative;
   display: flex;
@@ -42,7 +49,7 @@ header nav ul {
 }
 header nav ul li {
   display: inline-block;
-  margin: 0.2rem;
+  margin: 0.1rem;
   border: 1px solid #757575;
   border-radius: 2rem;
   padding: 0.1rem 0.2rem;
@@ -100,7 +107,7 @@ article {
   flex-direction: column;
   flex-grow: 1;
   width: 33%;
-  margin-bottom: 10vh;
+  margin-bottom: 3rem;
   align-items: center;
 }
 @media (max-width: 1024px) {
@@ -109,13 +116,19 @@ article {
   }
 }
 article div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
   border-radius: 50%;
   width: 200px;
   height: 200px;
-  margin-bottom: 2rem;
-  background-position: center;
-  background-size: cover;
-  cursor: pointer;
+  border-radius: 50%;
+  overflow: hidden;
+}
+article div img {
+  height: 222px;
+  transform: scale(1.5);
 }
 article h2 {
   color: #D3573C;
@@ -123,28 +136,30 @@ article h2 {
   font-weight: normal;
   font-size: 36px;
   line-height: 47px;
+  width: max-content;
+  text-align: center;
   margin: 0;
-  cursor: pointer;
 }
 article p {
   margin: 0;
 }
-article p:nth-child(3) {
+article p:nth-child(2) {
   color: #901C1C;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
   line-height: 17px;
   letter-spacing: 0em;
+  font-weight: 700;
 }
-article p:nth-child(4) {
+article p:nth-child(3) {
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
   line-height: 13px;
   letter-spacing: 0em;
 }
-article p:nth-child(5) {
+article p:nth-child(4) {
   color: #757575;
   font-size: 9px;
   font-style: normal;
@@ -159,14 +174,14 @@ article ul {
 }
 article ul li {
   display: inline-block;
-  margin: 0.2rem;
+  margin: 0.1rem;
   border: 1px solid #757575;
   border-radius: 2rem;
   padding: 0.1rem 0.2rem;
   color: #901C1C;
   font-weight: 700;
   font-size: 12px;
-  cursor: pointer;
+  cursor: unset;
 }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=home.css.map */
