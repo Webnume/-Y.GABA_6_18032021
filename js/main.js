@@ -1,5 +1,5 @@
-import showPhotographers from "/js/home.js"; 
-import showPhotographerProfil from "/js/photographer.js"; 
+import showPhotographers from "./home/home.js"; 
+import showPhotographerProfil from "./photographer/photographer.js"; 
 
 fetch("FishEyeData.json")
   .then(function(res) {
