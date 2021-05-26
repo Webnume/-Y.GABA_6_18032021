@@ -37,7 +37,7 @@ export default function showPhotographers (jsonObj) {
     }
 
     myArticle.innerHTML = 
-    '<a href="/photographer.html?id='+photographer.id+'"><div><img src="./images/'+zeroSpace+'/'+homePicture+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><ul></ul>'
+    '<a href="./photographer.html?id='+photographer.id+'"><div><img src="./images/'+zeroSpace+'/'+homePicture+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><ul></ul>'
 
 
     var tags = photographer.tags;
