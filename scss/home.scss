@@ -19,6 +19,10 @@ $grey: #757575;
       font-weight: 700;
       font-size: 12px;  
       cursor: $cursor;
+      &:hover,&:focus{
+        color: #FFFFFF;
+        background:$h1color;
+      }
     }
   }
 }

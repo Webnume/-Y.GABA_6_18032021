@@ -12,7 +12,7 @@ fetch("FishEyeData.json")
       showPhotographers(value.photographers);  
     }
     else if  (window.location.href.indexOf("photographer.html") > -1) {
-      showPhotographerProfil(value.photographers);
+      showPhotographerProfil(value);
     }
   })
   .catch(function(err) {

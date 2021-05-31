@@ -58,6 +58,10 @@ header nav ul li {
   font-size: 12px;
   cursor: pointer;
 }
+header nav ul li:hover, header nav ul li:focus {
+  color: #FFFFFF;
+  background: #901C1C;
+}
 @media (max-width: 999px) {
   header nav {
     margin-top: 2rem;
@@ -182,6 +186,10 @@ article ul li {
   font-weight: 700;
   font-size: 12px;
   cursor: unset;
+}
+article ul li:hover, article ul li:focus {
+  color: #FFFFFF;
+  background: #901C1C;
 }
 
 /*# sourceMappingURL=home.css.map */
