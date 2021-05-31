@@ -1,15 +1,10 @@
-export default function showPhotographerProfil (jsonObj) {
-  
-    
+export default function showPhotographerProfil (jsonObj) {     
     var photographers = jsonObj.photographers;
     var media = jsonObj.media;
-
     var banner = document.getElementById('banner');
-    var portofolio = document.getElementById('portofolio');
-    
+    var portofolio = document.getElementById('portofolio');    
     // réupération de l'id de la page courante
     var myID = window.location.search.split("=").pop();
-
     // réupération du photographe avec l'id de la page courante
     var photographer = photographers.find( ({ id }) => id.toString() === myID );
 
@@ -66,53 +61,30 @@ export default function showPhotographerProfil (jsonObj) {
     var filtersTab = ["Popularité", "Date", "Titre"];  
 
 
-    function filterMenu(){                
-
-        
+    function filterMenu(){          
         for (let i = 0; i < filtersTab.length; i++){
             var span = document.createElement('span');
             span.innerHTML=filtersTab[i];              
-            filter.appendChild(span);
-                
+            filter.appendChild(span);                
             span.classList="hidden";
-
             if (i==0){
                 span.classList="topFilterInMenu";  
                 var imgWrap = document.createElement('img');
-                imgWrap.src = '../images/dropdown-close.svg'
+                imgWrap.src = './images/dropdown-close.svg'
                 imgWrap.classList="arrow";              
                 span.appendChild(imgWrap);
-            }
-            
+            }            
         }
 
         const menuFirstElem = document.querySelector('.topFilterInMenu');
-        
-        const menuFirstElemArrow =window.getComputedStyle(menuFirstElem, ':after');                             
-
         const lastSpans = filter.querySelectorAll("span:not(.topFilterInMenu)");
 
         menuFirstElem.addEventListener("click", () => {    
             lastSpans.forEach((span)=>span.classList.toggle("hidden"));
-
-
-              
-            imgWrap.classList.toggle("up");
-            // console.log(menuFirstElemArrow)
-
-            // menuFirstElem.classList.addClass('up');
-            // menuFirstElemArrow.classList.toggle("up");
-
-            
-        });
-            
-
-
-
+            imgWrap.classList.toggle("up");            
+        });            
 
     }
-
-
 
 
 
