@@ -9,6 +9,9 @@ $grey: #757575;
     list-style: none;
     margin: 0.5rem;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+
     & li {
       display: inline-block;
       margin: 0.1rem;
@@ -28,9 +31,9 @@ $grey: #757575;
 }
 a {
   text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
   // &:link {
 
   // }
@@ -82,7 +85,7 @@ header{
     }
   }
   & nav {
-    @include liStyle(pointer);
+    @include liStyle();
     @media (max-width:999px){
       margin-top: 2rem;
     }
@@ -128,6 +131,12 @@ article {
   width: 33%;
   margin-bottom: 3rem;
   align-items: center;
+  & a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   @media (max-width:1024px){
     width:100%;
   }  
@@ -183,5 +192,5 @@ article {
       letter-spacing: 0em;
     }
   }
-  @include liStyle(unset);
+  @include liStyle(pointer);
 }

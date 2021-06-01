@@ -1,15 +1,65 @@
 export default function showPhotographers (jsonObj) {
-  
-  console.log(jsonObj);
-
+    // console.log(jsonObj);
+  var myNav = document.querySelector('nav');
   var section = document.querySelector('section');
   var photographers = jsonObj;
+  
+  
+var tagsTab =["Portrait", "Art", "Fashion", "Architecture", "Travel", "Sport", "Animals", "Events"];  
 
+
+  
+function tagFilter(event) {
+  console.log(event.target.textContent);
+  var tagSelected = (event.target.textContent).substring(1).toLowerCase();
+
+  var filterTab = photographers.filter(filtrerParTag);
+
+  function filtrerParTag(obj) {
+    if (obj.tags.includes(tagSelected)) {
+      return true;
+    } else {
+      return false;
+    }
+  }     
+
+  document.querySelector('section').innerHTML="";
+  mainDisplay(filterTab);
+
+}
+
+
+//banner
+function navigationDisplay(sectorToInsert,tab){
+  var navInner = '<ul>' ;  
+  for (const tag of tab) {
+    // console.log(tag);
+    navInner+='<a href="#" title="'+tag+'"><li>#'+tag+'</li></a>';
+  }
+  navInner+='</ul>';  
+  sectorToInsert.innerHTML= navInner;
+  clickHandler();
+}
+
+function clickHandler(){
+  var myA = document.querySelectorAll('ul a');
+  
+  console.log(myA);
+  for(const a of myA){    
+    console.log(a);
+    a.addEventListener("click", tagFilter);
+  }; 
+}
+
+
+
+navigationDisplay(myNav,tagsTab);
+
+// main
+function mainDisplay(photographers){  
   photographers.map(photographer => {
-    // console.log(obj)
-   
+    
     var myArticle = document.createElement('article');
-
     var homePicture="";
     let zeroSpace=(photographer.name).replace(/ +/g, "");
 
@@ -37,59 +87,28 @@ export default function showPhotographers (jsonObj) {
     }
 
     myArticle.innerHTML = 
-    '<a href="./photographer.html?id='+photographer.id+'"><div><img src="./images/'+zeroSpace+'/'+homePicture+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><ul></ul>'
+    '<a href="./photographer.html?id='+photographer.id+'"><div><img src="./images/'+zeroSpace+'/'+homePicture+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><p></p>'
 
 
     var tags = photographer.tags;
-    var myTags = myArticle.querySelector('ul');
-    for (var j = 0; j < tags.length; j++) {
-      var listItem = document.createElement('li');
-      listItem.textContent = "#"+tags[j]+" ";
-      myTags.appendChild(listItem);
-    }
-
-    section.appendChild(myArticle);
-
-  
-  });
-
-
-
-  // for (var i = 0; i < photographers.length; i++) {
-  //   var myArticle = document.createElement('article');
-  //   var divImg = document.createElement('div');    
-  //   var myH2 = document.createElement('h2');
-  //   var myCity = document.createElement('p');
-  //   var mymyTagLine = document.createElement('p');
-  //   var myPrice = document.createElement('p');
-  //   var myTags = document.createElement('ul');
-
-
-  //   divImg.setAttribute("id", photographers[i].id); 
-  //   myH2.setAttribute("id", photographers[i].id); 
-  //   myCity.textContent = photographers[i].city+", "+photographers[i].country;
-  //   mymyTagLine.textContent = photographers[i].tagline;
-  //   myPrice.textContent = photographers[i].price+"€/jour";
+    var myTagsUnderProfil = myArticle.querySelector('p:last-child');
 
     
-  //   var tags = photographers[i].tags;
-  //   for (var j = 0; j < tags.length; j++) {
-  //     var listItem = document.createElement('li');
-  //     listItem.textContent = "#"+tags[j]+" ";
-  //     myTags.appendChild(listItem);
-  //   }
-  //   myArticle.appendChild(divImg);
-  //   myArticle.appendChild(myH2);
-  //   myArticle.appendChild(myCity);
-  //   myArticle.appendChild(mymyTagLine);
-  //   myArticle.appendChild(myPrice);
-  //   myArticle.appendChild(myTags);
 
-  
-
-  // }
+navigationDisplay(myTagsUnderProfil,tags);
 
 
+
+    section.appendChild(myArticle);
+      
+ 
+  });
+}
+mainDisplay(photographers);  
+
+
+
+ 
 
 
 }
