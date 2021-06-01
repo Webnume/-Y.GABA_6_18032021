@@ -10,7 +10,7 @@ var tagsTab =["Portrait", "Art", "Fashion", "Architecture", "Travel", "Sport", "
 
   
 function tagFilter(event) {
-  console.log(event.target.textContent);
+  // console.log(event.target.textContent);
   var tagSelected = (event.target.textContent).substring(1).toLowerCase();
 
   var filterTab = photographers.filter(filtrerParTag);
@@ -25,6 +25,7 @@ function tagFilter(event) {
 
   document.querySelector('section').innerHTML="";
   mainDisplay(filterTab);
+  clickHandler();
 
 }
 
@@ -33,20 +34,18 @@ function tagFilter(event) {
 function navigationDisplay(sectorToInsert,tab){
   var navInner = '<ul>' ;  
   for (const tag of tab) {
-    // console.log(tag);
     navInner+='<a href="#" title="'+tag+'"><li>#'+tag+'</li></a>';
   }
   navInner+='</ul>';  
   sectorToInsert.innerHTML= navInner;
-  clickHandler();
+    // console.log(navInner);
 }
 
 function clickHandler(){
-  var myA = document.querySelectorAll('ul a');
-  
-  console.log(myA);
+  var myA = document.querySelectorAll('a li');  
+  // console.log(myA);
   for(const a of myA){    
-    console.log(a);
+    // console.log(a);
     a.addEventListener("click", tagFilter);
   }; 
 }
@@ -104,9 +103,8 @@ navigationDisplay(myTagsUnderProfil,tags);
  
   });
 }
-mainDisplay(photographers);  
-
-
+mainDisplay(photographers);
+clickHandler();
 
  
 
