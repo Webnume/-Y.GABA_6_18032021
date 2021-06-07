@@ -10,6 +10,7 @@ $grey: #757575;
     margin: 0.5rem;
     padding: 0;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
 
     & li {
@@ -22,7 +23,7 @@ $grey: #757575;
       font-weight: 700;
       font-size: 12px;  
       cursor: $cursor;
-      &:hover,&:focus{
+      &:hover,&:focus,&.up{
         color: #FFFFFF;
         background:$h1color;
       }
@@ -167,7 +168,7 @@ article {
   }  
   & p{
     margin: 0;
-    &:nth-child(2){
+    &:nth-child(3){
       color: $h1color;
       font-size: 13px;
       font-style: normal;
@@ -176,14 +177,14 @@ article {
       letter-spacing: 0em;
       font-weight: 700;
     }
-    &:nth-child(3){
+    &:nth-child(4){
       font-size: 10px;
       font-style: normal;
       font-weight: 400;
       line-height: 13px;
       letter-spacing: 0em;
     }
-    &:nth-child(4){
+    &:nth-child(5){
       color: $grey;
       font-size: 9px;
       font-style: normal;
