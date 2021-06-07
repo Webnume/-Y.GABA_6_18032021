@@ -7,5 +7,9 @@
     "sass": "sass --watch scss:Css"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-config-google": "^0.14.0"
+  }
 }
