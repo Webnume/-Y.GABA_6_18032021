@@ -161,6 +161,11 @@ main > #banner article h2 {
   left: 2rem;
   top: 2rem;
 }
+@media (max-width: 1024px) {
+  main > #banner article h2 {
+    font-size: 2.5rem;
+  }
+}
 main > #banner article p {
   margin: 0;
 }
@@ -195,6 +200,9 @@ main > #banner article p:nth-child(5) {
   position: absolute;
   left: 2rem;
   top: 12rem;
+}
+main > #banner article ul {
+  display: flex;
 }
 main > #banner article ul {
   list-style: none;
@@ -239,6 +247,15 @@ main > #banner article button:hover, main > #banner article button:focus {
   background: #D3573C;
   color: #000;
 }
+@media (max-width: 1024px) {
+  main > #banner article button {
+    position: fixed;
+    top: 95%;
+    height: 35px;
+    left: 35%;
+    z-index: 20;
+  }
+}
 main > #banner article .priceBottom {
   position: fixed;
   bottom: -46px;
@@ -246,18 +263,41 @@ main > #banner article .priceBottom {
   border-radius: 5px;
   width: 376px;
   height: 89px;
+  z-index: 20;
+}
+@media (max-width: 1024px) {
+  main > #banner article .priceBottom {
+    display: none;
+  }
 }
 main > #portofolio {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 main > #portofolio h4 {
   margin-right: 1rem;
+  width: unset;
+}
+@media (max-width: 1024px) {
+  main > #portofolio h4:first-child {
+    display: none;
+  }
 }
 main > #portofolio .filter {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1 0 90%;
+  align-items: flex-start;
+  position: absolute;
+  left: 80px;
+  z-index: 10;
+}
+@media (max-width: 1024px) {
+  main > #portofolio .filter {
+    display: none;
+  }
 }
 main > #portofolio .filter span {
   background: #901C1C;
@@ -289,6 +329,45 @@ main > #portofolio .filter span.topFilterInMenu .arrow.up {
 }
 main > #portofolio .filter .hidden {
   display: none;
+}
+main > #portofolio .container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+  flex: 1 0 100%;
+  justify-content: space-between;
+}
+main > #portofolio .container article {
+  position: relative;
+  margin-bottom: 2rem;
+}
+main > #portofolio .container article img:first-child {
+  object-fit: cover;
+  width: 350px;
+  height: 300px;
+}
+main > #portofolio .container article h4 {
+  color: #901C1C;
+  margin: 0;
+}
+main > #portofolio .container article span {
+  font-weight: 700;
+  color: #901C1C;
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+}
+main > #portofolio .container article img:last-child {
+  width: 16px;
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+  opacity: 1;
+  cursor: pointer;
+  transition: all 250ms ease-in-out;
+}
+main > #portofolio .container article img:last-child:hover {
+  transform: scale(1.2);
 }
 
 /* .menuHeader:hover + .items {

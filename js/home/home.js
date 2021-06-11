@@ -15,6 +15,10 @@ export default function showPhotographers (jsonObj) {
     
   }
 
+
+
+
+
   // filter on tag click
   function tagFilter(event) {
     let tagSelected = (event.target.textContent).substring(1).toLowerCase();
