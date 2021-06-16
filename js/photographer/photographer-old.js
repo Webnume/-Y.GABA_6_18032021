@@ -188,6 +188,7 @@ export default function showPhotographerProfil (jsonObj) {
     filterMenu();
 
 
+
     banner.appendChild(myArticleBanner);
     portofolio.appendChild(myPortofolioFilter);
     myPortofolioFilter.outerHTML =`<h4>Trier par</h4> ${filterContainer.outerHTML}`;    
@@ -219,104 +220,46 @@ export default function showPhotographerProfil (jsonObj) {
         });
     }
     formModalHandler();
-    
-    function lightboxHandler(){
-        const links = Array.from(document.querySelectorAll('a[href$=".jpg"]'));
-        const gallery = links.map(link=>link.getAttribute('href'));
-        const titlesDOM = Array.from(document.querySelectorAll('a + h4'));
-        
-const titles = titlesDOM.map(h4=>h4.textContent);
 
-        links.forEach(link=>link.addEventListener('click', e => {
-            e.preventDefault();
-            new Lightbox(e.currentTarget.getAttribute('href'), gallery, e.currentTarget.nextElementSibling.textContent, titles);
-
-            console.log(titles)
-            console.log(gallery)
-            // console.log( e.currentTarget.nextElementSibling.textContent)
-        }))
-    }
-    lightboxHandler();
     class Lightbox {
-
-        constructor(url ,images, title, titles){
-            this.element = this.buildDOM(url);
-            this.images = images;
-            // this.title=title;
-    this.titles=titles;
-            this.loadImage(url, title);
-            this.onKeyUp=this.onKeyUp.bind(this)
-            portofolio.appendChild(this.element);
-            document.addEventListener('keyup',this.onKeyUp)
+        static init(){
+            const links =document.querySelectorAll('a[href$=".jpg"]')
+            .forEach(link=>link.addEventListener('click', e => {
+                e.preventDefault();
+                new Lightbox(e.currentTarget.getAttribute('href'));
+            }))
         }
 
-        loadImage (url, title){
-            this.url = null;            
-const titleHTML = document.createElement("h4");
-            const image = document.createElement("img");
-            const container = this.element.querySelector('.lightbox__container');
-            const loader = document.createElement('div');
-            loader.classList.add("lightbox__loader");
-            container.innerHTML = '';
-            container.appendChild(loader);
-            image.onload = ()=>{
-                container.removeChild(loader);
-                container.appendChild(image);
-            titleHTML.textContent=title;
-                container.appendChild(titleHTML)
-                this.url = url ;
-                // this.title = title ;
-            }
-            image.src = url;
-            titleHTML.textContent=title;
-        }
-
-        onKeyUp (e){
-            if(e.key==="Escape"){
-                this.close(e);
-            }else if (e.key==='ArrowLeft'){
-                this.prev(e)
-            }else if (e.key==='ArrowRight'){
-                this.next(e)
-            }
-        }
-
-        close(e){
-            e.preventDefault();
-            this.element.parentElement.removeChild(this.element);
-            document.removeEventListener('keyup', this.onKeyUp);
-        }
-        
-        next(e){
-            e.preventDefault();
-            let i = this.images.findIndex(image=>image === this.url);
-            if (i === this.images.length-1){i = -1}
-            this.loadImage(this.images[i+1], this.titles[i+2]);
-        }
-
-        prev(e){
-            e.preventDefault();
-            let i = this.images.findIndex(image=>image === this.url);
-            if (i === 0){i = this.images.length}
-            this.loadImage(this.images[i-1], this.titles[i]);
+        constructor(url){
+            // this.url=url;
+            const element = this.buildDOM(url);
+            document.body.appendChild(element);
         }
 
         buildDOM (url){
             const dom = document.createElement('div');
-            dom.classList.add("lightbox");
+            dom.classList="lightbox";
             dom.innerHTML=`
             <button class="lightbox__closer"></button>
             <button class="lightbox__next"></button>                
             <button class="lightbox__prev"></button>
-            <div class="lightbox__container"></div>
-            </div>`;
-            dom.querySelector('.lightbox__closer').addEventListener('click', this.close.bind(this));
-            dom.querySelector('.lightbox__next').addEventListener('click', this.next.bind(this));
-            dom.querySelector('.lightbox__prev').addEventListener('click', this.prev.bind(this));
+            <div class="lightbox__container">
+              <img src="${url}" alt="">
+            </div>`
             return dom;
         }
 
+
+
+
+    //    let lightbox = document.querySelector("#portofolio > div.lightbox");
+    //    let lightboxCloser = document.querySelector("#portofolio > div.lightbox > .lightbox__closer");
+
+    //    lightboxCloser.addEventListener("click", ()=>lightbox.style.display="none");
+
+
     }
+    new Lightbox();
     
 
     function MediasFactory() {

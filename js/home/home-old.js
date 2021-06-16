@@ -1,4 +1,4 @@
-export default function home (jsonObj) {
+export default function showPhotographers (jsonObj) {
   // console.log(jsonObj);
   let myNav = document.querySelector('nav');
   let section = document.querySelector('section');
@@ -12,8 +12,11 @@ export default function home (jsonObj) {
       x.addEventListener('click', event => {
         tagFilter(event);     
       })
-    });      
+    });  
+    
   }
+
+
 
 
 

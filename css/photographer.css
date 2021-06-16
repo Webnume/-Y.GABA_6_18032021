@@ -227,7 +227,7 @@ main > #banner article ul li:hover, main > #banner article ul li:focus {
   color: #FFFFFF;
   background: #901C1C;
 }
-main > #banner article button {
+main > #banner article .contactButton {
   border: none;
   position: absolute;
   top: 39px;
@@ -242,13 +242,14 @@ main > #banner article button {
   border-radius: 5px;
   width: 170px;
   height: 69px;
+  cursor: pointer;
 }
-main > #banner article button:hover, main > #banner article button:focus {
+main > #banner article .contactButton:hover, main > #banner article .contactButton:focus {
   background: #D3573C;
   color: #000;
 }
 @media (max-width: 1024px) {
-  main > #banner article button {
+  main > #banner article .contactButton {
     position: fixed;
     top: 95%;
     height: 35px;
@@ -257,18 +258,82 @@ main > #banner article button:hover, main > #banner article button:focus {
   }
 }
 main > #banner article .priceBottom {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   position: fixed;
-  bottom: -46px;
+  bottom: -7px;
+  right: 0;
   background: #D3573C;
   border-radius: 5px;
   width: 376px;
-  height: 89px;
+  height: 60px;
   z-index: 20;
 }
 @media (max-width: 1024px) {
   main > #banner article .priceBottom {
     display: none;
   }
+}
+main > #banner article .priceBottom img {
+  width: 12px;
+}
+main > #banner article #form-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #D3573C;
+  width: 669px;
+  height: 900px;
+  padding: 2rem;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 28.5%;
+  display: none;
+}
+main > #banner article #form-modal h4 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 64px;
+  margin: 0;
+}
+main > #banner article #form-modal img {
+  position: absolute;
+  right: 2rem;
+  top: 3.5rem;
+  cursor: pointer;
+}
+main > #banner article #form-modal form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+}
+main > #banner article #form-modal form label {
+  font-size: 36px;
+  color: #312E2E;
+}
+main > #banner article #form-modal form input, main > #banner article #form-modal form textarea {
+  width: 599px;
+  border-radius: 5px;
+  border-style: none;
+  font-size: 30px;
+  color: #525252;
+}
+main > #banner article #form-modal form input {
+  line-height: 68px;
+}
+main > #banner article #form-modal form textarea {
+  resize: none;
+}
+main > #banner article #form-modal form .btn-submit {
+  background-color: #901C1C;
+  color: white;
+  width: 170px;
+  height: 69px;
+  font-size: 18px;
+  margin-top: 2rem;
+  cursor: pointer;
 }
 main > #portofolio {
   display: flex;
@@ -357,7 +422,7 @@ main > #portofolio .container article span {
   bottom: 0;
   right: 20px;
 }
-main > #portofolio .container article img:last-child {
+main > #portofolio .container article .heart-likes {
   width: 16px;
   position: absolute;
   right: 0;
@@ -366,8 +431,74 @@ main > #portofolio .container article img:last-child {
   cursor: pointer;
   transition: all 250ms ease-in-out;
 }
-main > #portofolio .container article img:last-child:hover {
+main > #portofolio .container article .heart-likes:hover {
   transform: scale(1.2);
+}
+main > #portofolio .lightbox {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  overflow: auto;
+}
+main > #portofolio .lightbox button {
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+main > #portofolio .lightbox button:hover {
+  opacity: 1;
+}
+main > #portofolio .lightbox .lightbox__closer {
+  position: fixed;
+  top: 20px;
+  right: 36px;
+  background: url(../images/Lightbox-closer.svg) center center/100% 100% no-repeat;
+  border: none;
+  width: 42px;
+  height: 42px;
+  z-index: 25;
+}
+main > #portofolio .lightbox .lightbox__next, main > #portofolio .lightbox .lightbox__prev {
+  border: none;
+  background: url(../images/Lightbox-arrow.svg) center center/48px 30px no-repeat;
+  width: 100px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin-top: -14px;
+  z-index: 21;
+}
+main > #portofolio .lightbox .lightbox__prev {
+  right: auto;
+  left: 0;
+  transform: rotate(180deg);
+}
+main > #portofolio .lightbox .lightbox__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0 70px;
+}
+main > #portofolio .lightbox .lightbox__container .lightbox__loader {
+  width: 38px;
+  height: 38px;
+  opacity: 0.5;
+  background: url(../images/lightbox-loader.svg) center center no-repeat;
+}
+main > #portofolio .lightbox .lightbox__container h4 {
+  color: #901C1C;
+  align-self: flex-start;
+}
+main > #portofolio .lightbox .lightbox__container img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* .menuHeader:hover + .items {

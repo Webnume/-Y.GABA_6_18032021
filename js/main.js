@@ -1,4 +1,4 @@
-import showPhotographers from "./home/home.js"; 
+import home from "./home/home.js"; 
 import showPhotographerProfil from "./photographer/photographer.js"; 
 
 fetch("FishEyeData.json")
@@ -9,7 +9,7 @@ fetch("FishEyeData.json")
   })
   .then(function(value) {    
     if (window.location.href.indexOf("index.html") > -1) {
-      showPhotographers(value.photographers);  
+      home(value.photographers);  
     }
     else if  (window.location.href.indexOf("photographer.html") > -1) {
       showPhotographerProfil(value);
