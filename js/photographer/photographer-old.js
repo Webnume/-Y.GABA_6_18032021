@@ -11,8 +11,8 @@ export default function showPhotographerProfil (jsonObj) {
 
     let myPortofolioHTML = document.createElement('div');
     myPortofolioHTML.classList="container";
-    let media = medias.filter( ({ photographerId }) => photographerId.toString() === myID );
-
+    var media = medias.filter( ({ photographerId }) => photographerId.toString() === myID );
+    var contentHTML ;
     // Banner
     var myArticleBanner = document.createElement('article');
     var homePicture="";
@@ -158,27 +158,34 @@ export default function showPhotographerProfil (jsonObj) {
     }
     
 
-    // displayPortofolio ();
-    function displayPortofolio (){
-        myPortofolioHTML.innerHTML = media.map(medi=> {
-            return `<article>
-                <a href="./images/${zeroSpaceFolder}/${medi.image}"><img src="./images/${zeroSpaceFolder}/${medi.image}"  alt="${medi.title}"></a>                
-                <h4>${medi.title}</h4>
-                <span>${medi.likes}</span>
-                <img  class="heart-likes" src="./images/heart-solid.svg" alt="${medi.title}">        
-            </article>`;
-            
-        }).join('');
-    }
 
+    function displayPortofolio (){
+        // myPortofolioHTML.innerHTML = media.map(medi=> {
+            // return `<article>
+            //     <a href="./images/${zeroSpaceFolder}/${medi.image}"><img src="./images/${zeroSpaceFolder}/${medi.image}"  alt="${medi.title}"></a>                
+            //     <h4>${medi.title}</h4>
+            //     <span>${medi.likes}</span>
+            //     <img  class="heart-likes" src="./images/heart-solid.svg" alt="${medi.title}">        
+            // </article>`;
+            
+        // }).join('');
+    }
+var hearts = document.querySelectorAll("#portofolio > div.container > article > img:nth-child(4)");
     function heartLikesHandler(){
-        let hearts = document.querySelectorAll("#portofolio > div.container > article > img:nth-child(4)");
+        
+        var hasClicked = false;
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
                 let like = heart.parentNode.querySelector("span");
-                if(medi.title===event.target.getAttribute("alt")){
-                    medi.likes++;
+                if(medi.title===event.target.getAttribute("alt") && !hasClicked){
+                    medi.likes+=1;
                     like.innerHTML=medi.likes;
-                } 
+                    hasClicked = true;
+                }else if (medi.title===event.target.getAttribute("alt") && hasClicked) {                    
+                    medi.likes-=1;
+                    like.innerHTML=medi.likes;  
+                    hasClicked = false;
+
+                }
             });
         }));
     }
@@ -186,7 +193,6 @@ export default function showPhotographerProfil (jsonObj) {
 // affichage du menu de tri
     bannerDisplay();
     filterMenu();
-
 
 
     banner.appendChild(myArticleBanner);
@@ -220,98 +226,185 @@ export default function showPhotographerProfil (jsonObj) {
         });
     }
     formModalHandler();
+    
+    function lightboxHandler(){
+        const links = Array.from(document.querySelectorAll('a[href$=".jpg"]'));
+        const gallery = links.map(link=>link.getAttribute('href'));
+        const titlesDOM = Array.from(document.querySelectorAll('a + h4'));        
+        const titles = titlesDOM.map(h4=>h4.textContent);
 
+        links.forEach(link=>link.addEventListener('click', e => {
+            e.preventDefault();
+            new Lightbox(e.currentTarget.getAttribute('href'), gallery, e.currentTarget.nextElementSibling.textContent, titles);
+
+            // console.log(titles)
+            // console.log(gallery)
+            // console.log( e.currentTarget.nextElementSibling.textContent)
+        }))
+    }
+    lightboxHandler();
+    
     class Lightbox {
-        static init(){
-            const links =document.querySelectorAll('a[href$=".jpg"]')
-            .forEach(link=>link.addEventListener('click', e => {
-                e.preventDefault();
-                new Lightbox(e.currentTarget.getAttribute('href'));
-            }))
+
+        constructor(url ,images, title, titles){
+            this.element = this.buildDOM(url);
+            this.images = images;
+            // this.title=title;
+    this.titles=titles;
+            this.loadImage(url, title);
+            this.onKeyUp=this.onKeyUp.bind(this)
+            portofolio.appendChild(this.element);
+            document.addEventListener('keyup',this.onKeyUp)
         }
 
-        constructor(url){
-            // this.url=url;
-            const element = this.buildDOM(url);
-            document.body.appendChild(element);
+        loadImage (url, title){
+            this.url = null;            
+const titleHTML = document.createElement("h4");
+            const image = document.createElement("img");
+            const container = this.element.querySelector('.lightbox__container');
+            const loader = document.createElement('div');
+            loader.classList.add("lightbox__loader");
+            container.innerHTML = '';
+            container.appendChild(loader);
+            image.onload = ()=>{
+                container.removeChild(loader);
+                container.appendChild(image);
+            titleHTML.textContent=title;
+                container.appendChild(titleHTML)
+                this.url = url ;
+                // this.title = title ;
+            }
+            image.src = url;
+            titleHTML.textContent=title;
+        }
+
+        onKeyUp (e){
+            if(e.key==="Escape"){
+                this.close(e);
+            }else if (e.key==='ArrowLeft'){
+                this.prev(e)
+            }else if (e.key==='ArrowRight'){
+                this.next(e)
+            }
+        }
+
+        close(e){
+            e.preventDefault();
+            this.element.parentElement.removeChild(this.element);
+            document.removeEventListener('keyup', this.onKeyUp);
+        }
+        
+        next(e){
+            e.preventDefault();
+            let i = this.images.findIndex(image=>image === this.url);
+            if (i === this.images.length-1){i = -1}
+            this.loadImage(this.images[i+1], this.titles[i+2]);
+        }
+
+        prev(e){
+            e.preventDefault();
+            let i = this.images.findIndex(image=>image === this.url);
+            if (i === 0){i = this.images.length}
+            this.loadImage(this.images[i-1], this.titles[i]);
         }
 
         buildDOM (url){
             const dom = document.createElement('div');
-            dom.classList="lightbox";
+            dom.classList.add("lightbox");
             dom.innerHTML=`
             <button class="lightbox__closer"></button>
             <button class="lightbox__next"></button>                
             <button class="lightbox__prev"></button>
-            <div class="lightbox__container">
-              <img src="${url}" alt="">
-            </div>`
+            <div class="lightbox__container"></div>
+            </div>`;
+            dom.querySelector('.lightbox__closer').addEventListener('click', this.close.bind(this));
+            dom.querySelector('.lightbox__next').addEventListener('click', this.next.bind(this));
+            dom.querySelector('.lightbox__prev').addEventListener('click', this.prev.bind(this));
             return dom;
         }
 
-
-
-
-    //    let lightbox = document.querySelector("#portofolio > div.lightbox");
-    //    let lightboxCloser = document.querySelector("#portofolio > div.lightbox > .lightbox__closer");
-
-    //    lightboxCloser.addEventListener("click", ()=>lightbox.style.display="none");
-
-
     }
-    new Lightbox();
     
 
     function MediasFactory() {
-        this.createMedia = function (type) {
-            var media;
-     
-            if (type === "image") {
+
+        this.createMedia = function (extension) {
+            // var media = this.media;
+ 
+            if (extension === "jpg") {
                 media = new Image();
-            } else if (type === "video") {
+            } else if (extension === "mp4") {
                 media = new Video();
             } 
+
+            // media.extension = extension;
      
-            media.type = type;
+            // media.say = function () {
+            //     log.add(this.extension + ": rate " + this.contentHTML + "/hour");
+            // }
      
-            media.say = function () {
-                log.add(this.type + ": rate " + this.extension + "/hour");
-            }
-     
-            return media;
+            return media;    
         }
     }
      
-    var Image = function () {
-        this.extension = ".jpg";
+    var Image = function () {     
+// debugger
+        console.log("c'est une image");
+        med =     
+        this.contentHTML=`<article><a href="./images/${zeroSpaceFolder}/${med.image}"><img src="./images/${zeroSpaceFolder}/${med.image}"  alt="${med.title}"></a><h4>${med.title}</h4><span>${med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${media.title}"></article>`;     
     };
      
     var Video = function () {
-        this.extension = ".mp4";
-    };
+        console.log("c'est une video"); 
+        this.contentHTML = "c'est une video";
+    };   
      
     // log helper
-    var log = (function () {
-        var log = "";
+    // var log = (function () {
+    //     var log = "";
      
-        return {
-            add: function (msg) { log += msg + "\n"; },
-            show: function () { alert(log); log = ""; }
-        }
-    })();
+    //     return {
+    //         add: function (msg) { log += msg + "\n"; },
+    //         show: function () { console.log(log); log = ""; }
+    //     }
+    // })();
      
+    function getFileExtension(filename) {
+        return filename.split('.').pop();
+    }
+
     function run() {
-        var medias = [];
-        var factory = new Factory();
-     
-        medias.push(factory.createMedia("fulltime"));
-        medias.push(factory.createMedia("parttime"));
+        var media = medias.filter( ({ photographerId }) => photographerId.toString() === myID ) ;
+        var factory = new MediasFactory();
+        var extension ;
+        media.map(med=>{
+            extension = med.image ?  getFileExtension(med.image) : getFileExtension(med.video);
+            if (extension==="jpg"){
+                console.log(med.image);
+                console.log(extension);        
+                media.push(factory.createMedia("jpg")); 
+            
+                myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${med.image}"><img src="./images/${zeroSpaceFolder}/${med.image}"  alt="${med.title}"></a><h4>${med.title}</h4><span>${med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${media.title}"></article>`;       
+            }else if (extension==="mp4"){
+                console.log(med.video);
+                console.log(extension);
+                media.push(factory.createMedia("mp4"));
+                myPortofolioHTML.innerHTML  += `<video controls width="350px" height="300px">
+                <source src="./images/${zeroSpaceFolder}/${med.video}" type="video/mp4">Sorry, your browser doesn't support embedded videos.</video>`;
+
+            }            
+// heartLikesHandler()
+        }) 
+
+        // media.push(factory.createMedia("jpg"));
+        // media.push(factory.createMedia("mp4"));
         
-        for (var i = 0, len = medias.length; i < len; i++) {
-            medias[i].say();
-        }
+        // console.log(media)
+        // for (var i = 0, len = media.length; i < len; i++) {
+        //     media[i].say()
+        // }
      
-        log.show();
+        // log.show();
     }
 
     run();

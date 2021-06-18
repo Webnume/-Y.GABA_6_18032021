@@ -494,7 +494,6 @@ main > #portofolio .lightbox .lightbox__container .lightbox__loader {
 }
 main > #portofolio .lightbox .lightbox__container h4 {
   color: #901C1C;
-  align-self: flex-start;
 }
 main > #portofolio .lightbox .lightbox__container img {
   max-width: 100%;

@@ -1,4 +1,6 @@
-export default function showPhotographerProfil (jsonObj) {     
+export default function showPhotographerProfil (jsonObj) {
+    
+    
     var photographers = jsonObj.photographers;
     var medias = jsonObj.media;
     var banner = document.getElementById('banner');
@@ -11,13 +13,12 @@ export default function showPhotographerProfil (jsonObj) {
 
     let myPortofolioHTML = document.createElement('div');
     myPortofolioHTML.classList="container";
-    let media = medias.filter( ({ photographerId }) => photographerId.toString() === myID );
-
+    var media = medias.filter( ({ photographerId }) => photographerId.toString() === myID );
     // Banner
     var myArticleBanner = document.createElement('article');
     var homePicture="";
     let zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
-
+console.log(media)
     function bannerDisplay(){
         switch (photographer.name) {
         case "Mimi Keel":
@@ -158,27 +159,34 @@ export default function showPhotographerProfil (jsonObj) {
     }
     
 
-    // displayPortofolio ();
-    function displayPortofolio (){
-        myPortofolioHTML.innerHTML = media.map(medi=> {
-            return `<article>
-                <a href="./images/${zeroSpaceFolder}/${medi.image}"><img src="./images/${zeroSpaceFolder}/${medi.image}"  alt="${medi.title}"></a>                
-                <h4>${medi.title}</h4>
-                <span>${medi.likes}</span>
-                <img  class="heart-likes" src="./images/heart-solid.svg" alt="${medi.title}">        
-            </article>`;
-            
-        }).join('');
-    }
 
+    function displayPortofolio (){
+        // myPortofolioHTML.innerHTML = media.map(medi=> {
+            // return `<article>
+            //     <a href="./images/${zeroSpaceFolder}/${medi.image}"><img src="./images/${zeroSpaceFolder}/${medi.image}"  alt="${medi.title}"></a>                
+            //     <h4>${medi.title}</h4>
+            //     <span>${medi.likes}</span>
+            //     <img  class="heart-likes" src="./images/heart-solid.svg" alt="${medi.title}">        
+            // </article>`;
+            
+        // }).join('');
+    }
+var hearts = document.querySelectorAll("#portofolio > div.container > article > img:nth-child(4)");
     function heartLikesHandler(){
-        let hearts = document.querySelectorAll("#portofolio > div.container > article > img:nth-child(4)");
+        
+        var hasClicked = false;
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
                 let like = heart.parentNode.querySelector("span");
-                if(medi.title===event.target.getAttribute("alt")){
-                    medi.likes++;
+                if(medi.title===event.target.getAttribute("alt") && !hasClicked){
+                    medi.likes+=1;
                     like.innerHTML=medi.likes;
-                } 
+                    hasClicked = true;
+                }else if (medi.title===event.target.getAttribute("alt") && hasClicked) {                    
+                    medi.likes-=1;
+                    like.innerHTML=medi.likes;  
+                    hasClicked = false;
+
+                }
             });
         }));
     }
@@ -223,20 +231,20 @@ export default function showPhotographerProfil (jsonObj) {
     function lightboxHandler(){
         const links = Array.from(document.querySelectorAll('a[href$=".jpg"]'));
         const gallery = links.map(link=>link.getAttribute('href'));
-        const titlesDOM = Array.from(document.querySelectorAll('a + h4'));
-        
-const titles = titlesDOM.map(h4=>h4.textContent);
+        const titlesDOM = Array.from(document.querySelectorAll('a + h4'));        
+        const titles = titlesDOM.map(h4=>h4.textContent);
 
         links.forEach(link=>link.addEventListener('click', e => {
             e.preventDefault();
             new Lightbox(e.currentTarget.getAttribute('href'), gallery, e.currentTarget.nextElementSibling.textContent, titles);
 
-            console.log(titles)
-            console.log(gallery)
+            // console.log(titles)
+            // console.log(gallery)
             // console.log( e.currentTarget.nextElementSibling.textContent)
         }))
     }
     lightboxHandler();
+    
     class Lightbox {
 
         constructor(url ,images, title, titles){
@@ -320,55 +328,85 @@ const titleHTML = document.createElement("h4");
     
 
     function MediasFactory() {
-        this.createMedia = function (type) {
-            var media;
-     
-            if (type === "image") {
+
+        this.createMedia = function (extension) {
+            // var media = this.media;
+    // debugger
+            if (extension === "jpg") {
                 media = new Image();
-            } else if (type === "video") {
+            } else if (extension === "mp4") {
                 media = new Video();
             } 
+
+            // media.extension = extension;
      
-            media.type = type;
+            // media.say = function () {
+            //     log.add(this.extension + ": rate " + this.contentHTML + "/hour");
+            // }
      
-            media.say = function () {
-                log.add(this.type + ": rate " + this.extension + "/hour");
-            }
-     
-            return media;
+            return media;    
         }
     }
      
-    var Image = function () {
-        this.extension = ".jpg";
+    var Image = function () {    
+        console.log("c'est une image");    
+
+        this.contentHTML="test"; 
+        //  debugger    
     };
      
     var Video = function () {
-        this.extension = ".mp4";
-    };
+        console.log("c'est une video"); 
+        this.contentHTML = "c'est une video";
+    };   
      
     // log helper
-    var log = (function () {
-        var log = "";
+    // var log = (function () {
+    //     var log = "";
      
-        return {
-            add: function (msg) { log += msg + "\n"; },
-            show: function () { alert(log); log = ""; }
-        }
-    })();
+    //     return {
+    //         add: function (msg) { log += msg + "\n"; },
+    //         show: function () { console.log(log); log = ""; }
+    //     }
+    // })();
      
+    function getFileExtension(filename) {
+        return filename.split('.').pop();
+    }
+
     function run() {
-        var medias = [];
-        var factory = new Factory();
-     
-        medias.push(factory.createMedia("fulltime"));
-        medias.push(factory.createMedia("parttime"));
+        console.log(media)
+        var media = medias.filter( ({ photographerId }) => photographerId.toString() === myID ) ;
+        var factory = new MediasFactory();
+        var extension ;
+        media.map(med=>{
+            extension = med.image ?  getFileExtension(med.image) : getFileExtension(med.video);
+            if (extension==="jpg"){
+                console.log(med.image);
+                console.log(extension);        
+                media.push(factory.createMedia("jpg")); 
+            
+                myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${med.image}"><img src="./images/${zeroSpaceFolder}/${med.image}"  alt="${med.title}"></a><h4>${med.title}</h4><span>${med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${media.title}"></article>`;       
+            }else if (extension==="mp4"){
+                console.log(med.video);
+                console.log(extension);
+                media.push(factory.createMedia("mp4"));
+                myPortofolioHTML.innerHTML  += `<video controls width="350px" height="300px">
+                <source src="./images/${zeroSpaceFolder}/${med.video}" type="video/mp4">Sorry, your browser doesn't support embedded videos.</video>`;
+
+            }            
+// heartLikesHandler()
+        }) 
+
+        // media.push(factory.createMedia("jpg"));
+        // media.push(factory.createMedia("mp4"));
         
-        for (var i = 0, len = medias.length; i < len; i++) {
-            medias[i].say();
-        }
+        // console.log(media)
+        // for (var i = 0, len = media.length; i < len; i++) {
+        //     media[i].say()
+        // }
      
-        log.show();
+        // log.show();
     }
 
     run();
