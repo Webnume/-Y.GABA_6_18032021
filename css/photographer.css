@@ -277,6 +277,7 @@ main > #banner article .priceBottom {
 }
 main > #banner article .priceBottom img {
   width: 12px;
+  margin-left: -111px;
 }
 main > #banner article #form-modal {
   display: flex;
