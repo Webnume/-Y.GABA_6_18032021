@@ -144,35 +144,25 @@ export default function showPhotographerProfil (jsonObj) {
                         if (x > y) {return 1;}
                         return 0;
                     });
+                    myPortofolioHTML.innerHTML="";
                     displayPortofolio ();
                 }else if(filterSelect.textContent==="Date") {
                     media = media.sort((a,b) => new Date(b.date) - new Date(a.date));
+                    myPortofolioHTML.innerHTML="";
                     displayPortofolio ();          
                 }else if(filterSelect.textContent==="Popularité") {                
-                    media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) );    
+                    media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
+                    myPortofolioHTML.innerHTML="";   
                     displayPortofolio ();                            
                 }         
             }      
         }) 
     }
-    
 
-
-    // function displayPortofolio (){
-        // myPortofolioHTML.innerHTML = media.map(medi=> {
-            // return `<article>
-            //     <a href="./images/${zeroSpaceFolder}/${medi.image}"><img src="./images/${zeroSpaceFolder}/${medi.image}"  alt="${medi.title}"></a>                
-            //     <h4>${medi.title}</h4>
-            //     <span>${medi.likes}</span>
-            //     <img  class="heart-likes" src="./images/heart-solid.svg" alt="${medi.title}">        
-            // </article>`;
-            
-        // }).join('');
-    // }
     
+    var hasclickedSession = [];
     function heartLikesHandler(){  
         var hearts = document.querySelectorAll("#portofolio > div.container > article > img:nth-child(4)"); 
-        var hasclickedSession = [];
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
                 let like = event.target.parentNode.querySelector("span");
                 let altTarget =event.target.getAttribute("alt");
@@ -243,10 +233,6 @@ export default function showPhotographerProfil (jsonObj) {
         links.forEach(link=>link.addEventListener('click', e => {
             e.preventDefault();
             new Lightbox(e.currentTarget.getAttribute('href'), gallery, e.currentTarget.nextElementSibling.textContent, titles);
-
-            // console.log(titles)
-            // console.log(gallery)
-            // console.log( e.currentTarget.nextElementSibling.textContent)
         }))
     }
     
@@ -341,28 +327,20 @@ const titleHTML = document.createElement("h4");
             } else if (extension === "mp4") {
                 new Video(mediaSingleID);
             } 
-
-            // media.extension = extension;
-     
-            // media.say = function () {
-            //     log.add(this.extension + ": rate " + this.contentHTML + "/hour");
-            // }
             heartLikesHandler(); 
             lightboxHandler();
             return media;    
         }
     }
      
-    var Image = function (mediaSingleID) {    
-        // console.log("c'est une image");    
+    var Image = function (mediaSingleID) { 
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
             
         myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}"  alt="${this.med.title}"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`; 
 
     };
      
-    var Video = function (mediaSingleID) {
-        // console.log("c'est une video");          
+    var Video = function (mediaSingleID) {       
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
 
         myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px"><source src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`;               
@@ -392,8 +370,5 @@ const titleHTML = document.createElement("h4");
     }
 
     displayPortofolio();
-
-
-
 
 }
