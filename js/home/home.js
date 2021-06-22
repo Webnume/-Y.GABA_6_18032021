@@ -7,33 +7,51 @@ export default function home (jsonObj) {
   let myArticles = document.getElementsByTagName("article");
 
   
+  let tagsArray= [];
   function clickHandler(){
-    document.querySelectorAll('ul').forEach(x => {
-      x.addEventListener('click', event => {
-        tagFilter(event);     
+    document.querySelectorAll('ul li').forEach(li => {
+      li.addEventListener('click', event => {
+        if (tagsArray.includes(event.target.textContent.substring(1).toLowerCase())) {
+            for( var i = 0; i < tagsArray.length; i++){  
+              if ( tagsArray[i] === li.textContent.substring(1).toLowerCase()) {  
+                tagsArray.splice(i, 1);
+              }
+            }             
+        } else if (!tagsArray.includes(li.textContent.toLowerCase()) ){
+          tagsArray.push(li.textContent.substring(1).toLowerCase());                      
+        }  
+        for (const a of document.querySelectorAll("li")) {
+          if (tagsArray.includes(a.textContent.substring(1).toLowerCase())) {
+            a.classList="up"; 
+          }else{
+            a.classList=""; 
+          }
+        }  
+        tagFilter();     
       })
     });      
   }
 
-
-
   // filter on tag click
-  function tagFilter(event) {
-    let tagSelected = (event.target.textContent).substring(1).toLowerCase();
+  function tagFilter() {
     [...myArticles].forEach(article => {
         for (let photographer of photographers){    
           if(article.getAttribute("data-filter") === photographer.name){
-            if(photographer.tags.includes(tagSelected)){
+            if(haveAllTagsSelected(photographer.tags)){
               article.style.display = "flex";
               article.style.flexDirection = "column";
             }else{
               article.style.display="none";
-            }
-          }                         
+            }  
+          }                     
         }
     });
   }
-  
+  function haveAllTagsSelected(tags){    
+    let intersection = tags.filter(t => tagsArray.includes(t)); 
+    return intersection.length === tagsArray.length;
+  }
+
   //banner
   function navigationDisplay(sectorToInsert,tab){
     let navInner = '<ul>' ;  
