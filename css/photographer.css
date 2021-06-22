@@ -277,6 +277,7 @@ main > #banner article .priceBottom {
 }
 main > #banner article .priceBottom img {
   width: 12px;
+  margin-left: -111px;
 }
 main > #banner article #form-modal {
   display: flex;
@@ -401,6 +402,7 @@ main > #portofolio .container {
   flex-basis: 100%;
   flex: 1 0 100%;
   justify-content: space-between;
+  padding-bottom: 2rem;
 }
 main > #portofolio .container article {
   position: relative;
