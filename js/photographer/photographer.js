@@ -14,7 +14,7 @@ export default function showPhotographerProfil (jsonObj) {
     myPortofolioHTML.classList="container";
     // Banner
     var myArticleBanner = document.createElement('article');
-    var homePicture="";
+    // var homePicture="";
     let zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
 
     let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
@@ -22,31 +22,31 @@ export default function showPhotographerProfil (jsonObj) {
 // console.log(media)
 //   debugger
     function bannerDisplay(){
-        switch (photographer.name) {
-        case "Mimi Keel":
-            homePicture="Portrait_Nora.jpg";  
-            break;
-            case "Ellie-Rose Wilkens":
-            homePicture="Architecture_Horseshoe.jpg";        
-            break;
-            case "Tracy Galindo":
-            homePicture="Fashion_Urban_Jungle.jpg";        
-            break;
-            case "Nabeel Bradford":
-            homePicture="Travel_Outdoor_Baths.jpg";        
-            break;
-            case "Rhode Dubois":
-            homePicture="Fashion_Melody_Red_on_Stripes.jpg";        
-            break;
-            case "Marcel Nikolic":
-            homePicture="Travel_Tower.jpg";        
-            break;  
-        }
+        // switch (photographer.name) {
+        // case "Mimi Keel":
+        //     homePicture="Portrait_Nora.jpg";  
+        //     break;
+        //     case "Ellie-Rose Wilkens":
+        //     homePicture="Architecture_Horseshoe.jpg";        
+        //     break;
+        //     case "Tracy Galindo":
+        //     homePicture="Fashion_Urban_Jungle.jpg";        
+        //     break;
+        //     case "Nabeel Bradford":
+        //     homePicture="Travel_Outdoor_Baths.jpg";        
+        //     break;
+        //     case "Rhode Dubois":
+        //     homePicture="Fashion_Melody_Red_on_Stripes.jpg";        
+        //     break;
+        //     case "Marcel Nikolic":
+        //     homePicture="Travel_Tower.jpg";        
+        //     break;  
+        // }
 
 
         myArticleBanner.innerHTML = 
         `<div>
-            <img src="./images/${zeroSpaceFolder}/${homePicture}" alt="${photographer.name}">
+            <img src="./images/PhotographersIDPhotos/${photographer.portrait}" alt="${photographer.name}">
         </div>
         <h2>${photographer.name}</h2>
         <p>${photographer.city}, ${photographer.country}</p>
@@ -110,30 +110,29 @@ export default function showPhotographerProfil (jsonObj) {
                 imgWrap.classList="arrow";              
                 span.appendChild(imgWrap);
             }            
-        }   
+        }        
     }
 
     function filterMenuclickHandler () {
-        const menu = document.querySelector(".filter");
+        const menu = document.querySelectorAll(".filter span");
         const lastSpans = document.querySelectorAll("span:not(.topFilterInMenu)");
         const imgArrow = document.querySelector(".arrow");
-        media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) );    
+        media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) );
+                let filterSelect =document.querySelector("#portofolio > div.filter > span.topFilterInMenu");    
         // displayPortofolio ()  
-        menu.addEventListener("click", (event) => {    
+        menu.forEach(span => {
+            span.addEventListener("click", (event) => { 
+
             lastSpans.forEach((span)=>span.classList.toggle("hidden"));
             imgArrow.classList.toggle("up");       
-            // console.log(event.target.textContent)
-
-// debugger
             //gestion du swapping entre les spans du menu filter
-            if(event.target.textContent!==menu.firstChild.textContent){
+            if(event.target.textContent!==filterSelect.textContent &&event.target.textContent!==""){
                 let firstChildTextOnly = document.querySelector(".filter :not(img)");
                 let temp = firstChildTextOnly.firstChild.textContent;
                 firstChildTextOnly.firstChild.textContent=event.target.textContent;
                 event.target.textContent=temp;
 
 
-                let filterSelect =document.querySelector("#portofolio > div.filter > span.topFilterInMenu");
                 // console.log(filterSelect.textContent);
                
                 if(filterSelect.textContent==="Titre"){
@@ -156,7 +155,9 @@ export default function showPhotographerProfil (jsonObj) {
                     displayPortofolio ();                            
                 }         
             }      
-        }) 
+        })
+        });
+         
     }
 
     
@@ -236,7 +237,8 @@ export default function showPhotographerProfil (jsonObj) {
         }))
     }
     
-    class Lightbox {
+   
+  class Lightbox {
 
         constructor(url ,images, title, titles){
             this.element = this.buildDOM(url);
@@ -345,9 +347,7 @@ const titleHTML = document.createElement("h4");
 
         myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px"><source src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`;               
     };   
-     
-
-     
+        
     function getFileExtension(filename) {
         return filename.split('.').pop();
     }

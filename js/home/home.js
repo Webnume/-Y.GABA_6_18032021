@@ -5,7 +5,6 @@ export default function home (jsonObj) {
   let photographers = jsonObj;
   let tagsTab =["Portrait", "Art", "Fashion", "Architecture", "Travel", "Sport", "Animals", "Events"];  
   let myArticles = document.getElementsByTagName("article");
-
   
   let tagsArray= [];
   function clickHandler(){
@@ -67,32 +66,32 @@ export default function home (jsonObj) {
   function mainDisplay(photographers){  
     photographers.map(photographer => {      
       let myArticle = document.createElement('article');
-      let homePicture="";
-      let zeroSpace=(photographer.name).replace(/ +/g, "");
-      switch (photographer.name) {
-        case "Mimi Keel":
-          homePicture="Portrait_Nora.jpg";  
-          break;
-          case "Ellie-Rose Wilkens":
-          homePicture="Architecture_Horseshoe.jpg";        
-          break;
-          case "Tracy Galindo":
-          homePicture="Fashion_Urban_Jungle.jpg";        
-          break;
-          case "Nabeel Bradford":
-          homePicture="Travel_Outdoor_Baths.jpg";        
-          break;
-          case "Rhode Dubois":
-          homePicture="Fashion_Melody_Red_on_Stripes.jpg";        
-          break;
-          case "Marcel Nikolic":
-          homePicture="Travel_Tower.jpg";        
-          break;    
-        default:
-          break;
-      };
+      // let homePicture="";
+      // let zeroSpace=(photographer.name).replace(/ +/g, "");
+      // switch (photographer.name) {
+      //   case "Mimi Keel":
+      //     homePicture="Portrait_Nora.jpg";  
+      //     break;
+      //     case "Ellie-Rose Wilkens":
+      //     homePicture="Architecture_Horseshoe.jpg";        
+      //     break;
+      //     case "Tracy Galindo":
+      //     homePicture="Fashion_Urban_Jungle.jpg";        
+      //     break;
+      //     case "Nabeel Bradford":
+      //     homePicture="Travel_Outdoor_Baths.jpg";        
+      //     break;
+      //     case "Rhode Dubois":
+      //     homePicture="Fashion_Melody_Red_on_Stripes.jpg";        
+      //     break;
+      //     case "Marcel Nikolic":
+      //     homePicture="Travel_Tower.jpg";        
+      //     break;    
+      //   default:
+      //     break;
+      // };
       myArticle.innerHTML = 
-      '<h1>Nos photographes</h1><a href="./photographer.html?id='+photographer.id+'"><div><img src="./images/'+zeroSpace+'/'+homePicture+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><p></p>';
+      '<h1>Nos photographes</h1><a href="./photographer.html?id='+photographer.id+'"><div><img src="./images/PhotographersIDPhotos/'+photographer.portrait+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><p></p>';
       let tags = photographer.tags;
       let myTagsUnderProfil = myArticle.querySelector('p:last-child');
       navigationDisplay(myTagsUnderProfil,tags);
@@ -104,5 +103,5 @@ export default function home (jsonObj) {
   //Starting here
   navigationDisplay(myNav,tagsTab);
   mainDisplay(photographers);
-  clickHandler();
+  clickHandler();filterMenuclickHandler()
 }
