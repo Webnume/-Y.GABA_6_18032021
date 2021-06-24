@@ -9,12 +9,9 @@ $greyspecial:#312E2E;
 
 @mixin liStyle ($cursor:pointer) {
   & ul {
+    display: flex;
     list-style: none;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    left: 2rem;
-    top: 13rem;
+    padding: 0;    
     & li {
       display: inline-block;
       margin-right: 0.5rem;
@@ -138,112 +135,92 @@ main {
       position: relative;
       @media (max-width:1024px){
         width:100%;
+        height: 150px;
         background-color:unset;
+        margin-bottom: 0;
       }  
-      & div{
+      & section{
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 1rem;
-        border-radius: 50%;
-        width: 193px;
-        height: 200px;
-        border-radius: 50%;
-        overflow: hidden;
-        position: absolute;
-        right: 2rem;
-        top: 2rem;    
-        @media (max-width:1024px){
-            width:100px;
-            height: 100px;
-            top: 2.5rem;
+        justify-content: space-around;
+        flex-direction: row; 
+        width: 100%;
+        align-items: flex-start;
+        & .infos{
+          & h2{
+            color: $h2color;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 64px;
+            line-height: 83px;
+            margin: 0;
+            @media (max-width:1024px){
+              font-size: 36px;
+              line-height: 35px;
+            }  
           }  
-        & img{
-          height: 222px;
-          transform: scale(1.3);          
+          & p{
+            margin: 0;
+            &.tagline{
+              color: $h1color;
+              font-size: 24px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 31px;
+              letter-spacing: 0em;
+              font-weight: 700;   
+              @media (max-width:1024px){
+                font-size: 13px;
+              }  
+            }  
+          }
+          @include liStyle();
+
+        } 
+        & .contactButton{
+            border: none;
+            background: #911C1C;
+            font-family: DM Sans;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 23px;
+            text-align: center;
+            color: #FFFFFF;
+            border-radius: 5px;
+            width: 170px;
+            height: 69px;
+            cursor: pointer;
+            &:hover,&:focus{
+              background: $h2color;
+              color: #000;
+            }        
+            @media (max-width:1024px){
+              position: fixed;
+              top: 95%;
+              height: 35px;
+              left: 28%;
+              z-index: 20;
+            }
+        }
+        & .imgWrapper{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 1rem;
+          border-radius: 50%;
+          width: 193px;
+          height: 200px;
+          overflow: hidden; 
+          @media (max-width:1024px){
+              width:100px;
+              height: 100px;
+              top: 2.5rem;
+            }  
+          & img{
+            height: 222px;
+            transform: scale(1.3);          
+          }
         }
       } 
-      & h2{
-      color: $h2color;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 64px;
-      line-height: 83px;
-      margin: 0;
-      position: absolute;
-      left: 2rem;
-      top: 2rem;   
-      @media (max-width:1024px){
-          font-size: 2.5rem;
-        }  
-      }  
-      & p{
-        margin: 0;
-        &:nth-child(3){
-          color: $h1color;
-          font-size: 24px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 31px;
-          letter-spacing: 0em;
-          font-weight: 700;
-          position: absolute;
-          left: 2.2rem;
-          top: 7.4rem;
-        }
-        &:nth-child(4){
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 400;
-          position: absolute;
-          left: 2.1rem;
-          top: 9.9rem;
-          color: $greydarker;
-        }
-        &:nth-child(5){
-          color: $grey;
-          font-size: 9px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 12px;
-          letter-spacing: 0em;
-          position: absolute;
-          left: 2rem;
-          top: 12rem;
-        }    
-      }
-      & ul {
-        display: flex;
-      }
-      @include liStyle();  
-      & .contactButton{
-          border: none;
-          position: absolute;
-          top: 39px;
-          left: 59%;
-          background: #911C1C;
-          font-family: DM Sans;
-          font-weight: bold;
-          font-size: 18px;
-          line-height: 23px;
-          text-align: center;
-          color: #FFFFFF;
-          border-radius: 5px;
-          width: 170px;
-          height: 69px;
-          cursor: pointer;
-          &:hover,&:focus{
-            background: $h2color;
-            color: #000;
-          }        
-          @media (max-width:1024px){
-            position: fixed;
-            top: 95%;
-            height: 35px;
-            left: 35%;
-            z-index: 20;
-          }
-      }
       & .priceBottom{
         display: flex;     
         justify-content: space-around;
@@ -269,43 +246,68 @@ main {
         flex-direction: column;
         align-items: flex-start;
         background-color: $h2color;
-        width: 669px;
-        height: 900px;
+        width: auto;
+        // height: 900px;
         padding: 2rem;
         z-index: 100;
         position: fixed;
-        top: 0;
-        left: 28.5%;    
-        display: none;
+        top: 5%;
+        left: 33%;   
+        display: none;            
+        @media (max-width:1024px){
+          top: 0;
+          left: 0;
+          padding: 1rem;
+          height: 100%;
+        }
         & h4{
           font-style: normal;
           font-weight: normal;
           font-size: 64px;
           margin: 0;
+          @media (max-width:1024px){
+            font-size:36px;
+          }
         }
         & img{
           position: absolute;
           right: 2rem;
           top: 3.5rem;
-          cursor: pointer;
+          cursor: pointer;            
+          @media (max-width:1024px){
+            width : 1rem;
+            top:2rem
+          }
         }
         & form{
           display: flex;
           flex-direction: column;
-          margin-top: 1%;
+          margin-top: 1%;          
+          @media (max-width:1024px){
+            margin-top: 5%;   
+          }
           & label{
             font-size: 36px;
             color: $greyspecial;
+            @media (max-width:1024px){
+              margin-top: 2rem;
+              margin-bottom: 1rem;
+              font-size:24px;
+            }
           }
           & input, textarea {
             width: 599px;
             border-radius: 5px;
             border-style: none;
             font-size: 30px;
-            color: $greydarker;
+            color: $greydarker;            
+            @media (max-width:1024px){
+              width : 338px;
+              font-size:18px;
+            }
           }
           & input {
-            line-height: 68px;
+            line-height: 35px;
           }
           & textarea {
             resize: none;
@@ -317,7 +319,11 @@ main {
             height: 69px;
             font-size: 18px;
             margin-top: 2rem;
-            cursor: pointer;
+            cursor: pointer;            
+            @media (max-width:1024px){
+              height:35px;
+              align-self: center;
+            }
           }
 
         }
@@ -392,7 +398,10 @@ main {
       flex-basis: 100%;
       flex: 1 0 100%;
       justify-content: space-between;
-      padding-bottom: 2rem;
+      padding-bottom: 2rem;        
+      @media (max-width:1024px){
+        justify-content: center;
+      }
 
       & article{
         position: relative;
@@ -401,6 +410,11 @@ main {
           object-fit: cover;
           width: 350px;
           height: 300px;
+          border-radius: 5px;        
+          @media (max-width:1024px){
+            width: 335px;
+            height: 190px;
+          }
         }
         & h4{
           color: $h1color;
@@ -476,7 +490,7 @@ main {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 100vh;
+        height: 100%;
         margin: 0 70px;    
         & .lightbox__loader{
           width: 38px;
@@ -488,9 +502,7 @@ main {
           color: #901C1C;
         }           
         & img{
-          // object-fit: cover;
-          max-width: 100%;
-          height: auto;
+          height: 67%;
         }
       }
     }

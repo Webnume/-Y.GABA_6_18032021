@@ -43,12 +43,9 @@ header img {
   }
 }
 header nav ul {
+  display: flex;
   list-style: none;
-  margin: 0;
   padding: 0;
-  position: absolute;
-  left: 2rem;
-  top: 13rem;
 }
 header nav ul li {
   display: inline-block;
@@ -122,54 +119,36 @@ main > #banner article {
 @media (max-width: 1024px) {
   main > #banner article {
     width: 100%;
+    height: 150px;
     background-color: unset;
+    margin-bottom: 0;
   }
 }
-main > #banner article div {
+main > #banner article section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1rem;
-  border-radius: 50%;
-  width: 193px;
-  height: 200px;
-  border-radius: 50%;
-  overflow: hidden;
-  position: absolute;
-  right: 2rem;
-  top: 2rem;
+  justify-content: space-around;
+  flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
 }
-@media (max-width: 1024px) {
-  main > #banner article div {
-    width: 100px;
-    height: 100px;
-    top: 2.5rem;
-  }
-}
-main > #banner article div img {
-  height: 222px;
-  transform: scale(1.3);
-}
-main > #banner article h2 {
+main > #banner article section .infos h2 {
   color: #D3573C;
   font-style: normal;
   font-weight: normal;
   font-size: 64px;
   line-height: 83px;
   margin: 0;
-  position: absolute;
-  left: 2rem;
-  top: 2rem;
 }
 @media (max-width: 1024px) {
-  main > #banner article h2 {
-    font-size: 2.5rem;
+  main > #banner article section .infos h2 {
+    font-size: 36px;
+    line-height: 35px;
   }
 }
-main > #banner article p {
+main > #banner article section .infos p {
   margin: 0;
 }
-main > #banner article p:nth-child(3) {
+main > #banner article section .infos p.tagline {
   color: #901C1C;
   font-size: 24px;
   font-style: normal;
@@ -177,42 +156,18 @@ main > #banner article p:nth-child(3) {
   line-height: 31px;
   letter-spacing: 0em;
   font-weight: 700;
-  position: absolute;
-  left: 2.2rem;
-  top: 7.4rem;
 }
-main > #banner article p:nth-child(4) {
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  position: absolute;
-  left: 2.1rem;
-  top: 9.9rem;
-  color: #525252;
+@media (max-width: 1024px) {
+  main > #banner article section .infos p.tagline {
+    font-size: 13px;
+  }
 }
-main > #banner article p:nth-child(5) {
-  color: #757575;
-  font-size: 9px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 12px;
-  letter-spacing: 0em;
-  position: absolute;
-  left: 2rem;
-  top: 12rem;
-}
-main > #banner article ul {
+main > #banner article section .infos ul {
   display: flex;
-}
-main > #banner article ul {
   list-style: none;
-  margin: 0;
   padding: 0;
-  position: absolute;
-  left: 2rem;
-  top: 13rem;
 }
-main > #banner article ul li {
+main > #banner article section .infos ul li {
   display: inline-block;
   margin-right: 0.5rem;
   border: 0.5px solid #C4C4C4;
@@ -223,15 +178,12 @@ main > #banner article ul li {
   font-size: 12px;
   cursor: pointer;
 }
-main > #banner article ul li:hover, main > #banner article ul li:focus {
+main > #banner article section .infos ul li:hover, main > #banner article section .infos ul li:focus {
   color: #FFFFFF;
   background: #901C1C;
 }
-main > #banner article .contactButton {
+main > #banner article section .contactButton {
   border: none;
-  position: absolute;
-  top: 39px;
-  left: 59%;
   background: #911C1C;
   font-family: DM Sans;
   font-weight: bold;
@@ -244,18 +196,39 @@ main > #banner article .contactButton {
   height: 69px;
   cursor: pointer;
 }
-main > #banner article .contactButton:hover, main > #banner article .contactButton:focus {
+main > #banner article section .contactButton:hover, main > #banner article section .contactButton:focus {
   background: #D3573C;
   color: #000;
 }
 @media (max-width: 1024px) {
-  main > #banner article .contactButton {
+  main > #banner article section .contactButton {
     position: fixed;
     top: 95%;
     height: 35px;
-    left: 35%;
+    left: 28%;
     z-index: 20;
   }
+}
+main > #banner article section .imgWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  width: 193px;
+  height: 200px;
+  overflow: hidden;
+}
+@media (max-width: 1024px) {
+  main > #banner article section .imgWrapper {
+    width: 100px;
+    height: 100px;
+    top: 2.5rem;
+  }
+}
+main > #banner article section .imgWrapper img {
+  height: 222px;
+  transform: scale(1.3);
 }
 main > #banner article .priceBottom {
   display: flex;
@@ -284,14 +257,21 @@ main > #banner article #form-modal {
   flex-direction: column;
   align-items: flex-start;
   background-color: #D3573C;
-  width: 669px;
-  height: 900px;
+  width: auto;
   padding: 2rem;
   z-index: 100;
   position: fixed;
-  top: 0;
-  left: 28.5%;
+  top: 5%;
+  left: 33%;
   display: none;
+}
+@media (max-width: 1024px) {
+  main > #banner article #form-modal {
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    height: 100%;
+  }
 }
 main > #banner article #form-modal h4 {
   font-style: normal;
@@ -299,20 +279,43 @@ main > #banner article #form-modal h4 {
   font-size: 64px;
   margin: 0;
 }
+@media (max-width: 1024px) {
+  main > #banner article #form-modal h4 {
+    font-size: 36px;
+  }
+}
 main > #banner article #form-modal img {
   position: absolute;
   right: 2rem;
   top: 3.5rem;
   cursor: pointer;
 }
+@media (max-width: 1024px) {
+  main > #banner article #form-modal img {
+    width: 1rem;
+    top: 2rem;
+  }
+}
 main > #banner article #form-modal form {
   display: flex;
   flex-direction: column;
   margin-top: 1%;
 }
+@media (max-width: 1024px) {
+  main > #banner article #form-modal form {
+    margin-top: 5%;
+  }
+}
 main > #banner article #form-modal form label {
   font-size: 36px;
   color: #312E2E;
+}
+@media (max-width: 1024px) {
+  main > #banner article #form-modal form label {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 24px;
+  }
 }
 main > #banner article #form-modal form input, main > #banner article #form-modal form textarea {
   width: 599px;
@@ -321,8 +324,14 @@ main > #banner article #form-modal form input, main > #banner article #form-moda
   font-size: 30px;
   color: #525252;
 }
+@media (max-width: 1024px) {
+  main > #banner article #form-modal form input, main > #banner article #form-modal form textarea {
+    width: 338px;
+    font-size: 18px;
+  }
+}
 main > #banner article #form-modal form input {
-  line-height: 68px;
+  line-height: 35px;
 }
 main > #banner article #form-modal form textarea {
   resize: none;
@@ -335,6 +344,12 @@ main > #banner article #form-modal form .btn-submit {
   font-size: 18px;
   margin-top: 2rem;
   cursor: pointer;
+}
+@media (max-width: 1024px) {
+  main > #banner article #form-modal form .btn-submit {
+    height: 35px;
+    align-self: center;
+  }
 }
 main > #portofolio {
   display: flex;
@@ -404,6 +419,11 @@ main > #portofolio .container {
   justify-content: space-between;
   padding-bottom: 2rem;
 }
+@media (max-width: 1024px) {
+  main > #portofolio .container {
+    justify-content: center;
+  }
+}
 main > #portofolio .container article {
   position: relative;
   margin-bottom: 2rem;
@@ -412,6 +432,13 @@ main > #portofolio .container article img:first-child {
   object-fit: cover;
   width: 350px;
   height: 300px;
+  border-radius: 5px;
+}
+@media (max-width: 1024px) {
+  main > #portofolio .container article img:first-child {
+    width: 335px;
+    height: 190px;
+  }
 }
 main > #portofolio .container article h4 {
   color: #901C1C;
@@ -485,7 +512,7 @@ main > #portofolio .lightbox .lightbox__container {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100%;
   margin: 0 70px;
 }
 main > #portofolio .lightbox .lightbox__container .lightbox__loader {
@@ -498,8 +525,7 @@ main > #portofolio .lightbox .lightbox__container h4 {
   color: #901C1C;
 }
 main > #portofolio .lightbox .lightbox__container img {
-  max-width: 100%;
-  height: auto;
+  height: 67%;
 }
 
 /* .menuHeader:hover + .items {

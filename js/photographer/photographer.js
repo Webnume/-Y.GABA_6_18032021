@@ -18,46 +18,32 @@ export default function showPhotographerProfil (jsonObj) {
     let zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
 
     let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
-    
-// console.log(media)
-//   debugger
+
     function bannerDisplay(){
-        // switch (photographer.name) {
-        // case "Mimi Keel":
-        //     homePicture="Portrait_Nora.jpg";  
-        //     break;
-        //     case "Ellie-Rose Wilkens":
-        //     homePicture="Architecture_Horseshoe.jpg";        
-        //     break;
-        //     case "Tracy Galindo":
-        //     homePicture="Fashion_Urban_Jungle.jpg";        
-        //     break;
-        //     case "Nabeel Bradford":
-        //     homePicture="Travel_Outdoor_Baths.jpg";        
-        //     break;
-        //     case "Rhode Dubois":
-        //     homePicture="Fashion_Melody_Red_on_Stripes.jpg";        
-        //     break;
-        //     case "Marcel Nikolic":
-        //     homePicture="Travel_Tower.jpg";        
-        //     break;  
-        // }
 
-
+        var tags = photographer.tags;
         myArticleBanner.innerHTML = 
-        `<div>
-            <img src="./images/PhotographersIDPhotos/${photographer.portrait}" alt="${photographer.name}">
-        </div>
-        <h2>${photographer.name}</h2>
-        <p>${photographer.city}, ${photographer.country}</p>
-        <p>${photographer.tagline}</p>
-        <ul></ul>
+        `<section>         
+            <div class="infos">
+                <h2>${photographer.name}</h2>
+                <p>${photographer.city}, ${photographer.country}</p>
+                <p class="tagline">${photographer.tagline}</p>
+                <ul>
+                    ${tags.map(tag=>
+                        `<a href="./index.html"><li>#${tag}</li></a>`
+                    ).join('')}                
+                </ul>
+            </div>
         <button class="contactButton">Contactez-moi</button>
+            <div class="imgWrapper">
+                <img src="./images/PhotographersIDPhotos/${photographer.portrait}" alt="${photographer.name}">
+            </div>   
+        </section>
         <p class="priceBottom">
             <span>
                 ${allLikesSum} 
             </span>
-                <img src="./images/heart-solid-black.svg">
+                <img src="./images/heart-solid-Black.svg">
             <span>${photographer.price}€ / jour</span>
         </p>
         <section id="form-modal">
@@ -76,29 +62,18 @@ export default function showPhotographerProfil (jsonObj) {
                 <input class="btn-submit" type="submit" value="Envoyer">
             </form>
         </section>`;
-
-
-        var tags = photographer.tags;
-        // console.log(tags);
-        var myTags =  myArticleBanner.querySelector('ul');
-        
-            myTags.innerHTML=tags.map(tag=>
-            `<a href="./index.html"><li>#${tag}</li></a>`
-        ).join('');
-        myArticleBanner.appendChild(myTags);
-
     }
 
 
     // Portofolio
     var myPortofolioFilter = document.createElement('article');
-    var filtersTab = ["Popularité", "Date", "Titre"];  
 
     let filterContainer = document.createElement('div');
     filterContainer.classList="filter"; 
     let imgWrap = document.createElement('img');
 
-    function filterMenu(){          
+    function filterMenu(){   
+    var filtersTab = ["Popularité", "Date", "Titre"];         
         for (let i = 0; i < filtersTab.length; i++){
             var span = document.createElement('span');
             span.innerHTML=filtersTab[i];              
@@ -160,7 +135,6 @@ export default function showPhotographerProfil (jsonObj) {
          
     }
 
-    
     var hasclickedSession = [];
     function heartLikesHandler(){  
         var hearts = document.querySelectorAll("#portofolio > div.container > article > img:nth-child(4)"); 
@@ -202,16 +176,17 @@ export default function showPhotographerProfil (jsonObj) {
     portofolio.appendChild(myPortofolioHTML);
 
     
+  
     function formModalHandler(){
         let formModal = document.getElementById('form-modal'); 
-        let contactButton = document.querySelector("#banner > article > .contactButton");
+        let contactButton = document.querySelector("#banner > article > section:nth-child(1) > button");
+        contactButton.addEventListener("click",()=>formModal.style.display = "block");
         let formModalCloser = document.querySelector("#form-modal > img");
         let formModalBtnSubmit = document.querySelector("#form-modal > form > input.btn-submit");
         let firstname =document.querySelector("#firstname");
         let name = document.querySelector("#name");
         let email = document.querySelector("#email");
         let message = document.querySelector("#message");
-        contactButton.addEventListener("click",()=>formModal.style.display = "block");
         formModalCloser.addEventListener("click",()=>formModal.style.display = "none");    
         formModalBtnSubmit.addEventListener("click",(e)=>{
             console.log(`Prénom : ${firstname.value} \n Nom : ${name.value} \n Email : ${email.value} \n Message : ${message.value}`);
@@ -244,7 +219,7 @@ export default function showPhotographerProfil (jsonObj) {
             this.element = this.buildDOM(url);
             this.images = images;
             // this.title=title;
-    this.titles=titles;
+            this.titles=titles;
             this.loadImage(url, title);
             this.onKeyUp=this.onKeyUp.bind(this)
             portofolio.appendChild(this.element);
@@ -253,7 +228,7 @@ export default function showPhotographerProfil (jsonObj) {
 
         loadImage (url, title){
             this.url = null;            
-const titleHTML = document.createElement("h4");
+            const titleHTML = document.createElement("h4");
             const image = document.createElement("img");
             const container = this.element.querySelector('.lightbox__container');
             const loader = document.createElement('div');
