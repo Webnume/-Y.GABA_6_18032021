@@ -1,5 +1,6 @@
+import formHandler from "./modal-form.js"; 
 export default function showPhotographerProfil (jsonObj) {
-    
+//    console.log(formHandler);
     // réupération de l'id de la page courante
     var myID = window.location.search.split("=").pop();
     var photographers = jsonObj.photographers;
@@ -20,7 +21,6 @@ export default function showPhotographerProfil (jsonObj) {
     let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
 
     function bannerDisplay(){
-
         var tags = photographer.tags;
         myArticleBanner.innerHTML = 
         `<section>         
@@ -49,16 +49,27 @@ export default function showPhotographerProfil (jsonObj) {
         <section id="form-modal">
             <h4>Contactez-moi</h4>
             <h4>${photographer.name}</h4>
-            <img src="./images/modal-form-closer.svg" alt="">
+            <img class="close" src="./images/modal-form-closer.svg" alt="">
             <form action="#">
-                <label for="firstname">Prénom</label>
-                <input id="firstname" name="firstname" type="text">
-                <label for="name">Nom</label>
-                <input id="name" name="name" type="text">
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email">
-                <label for="message">Votre message</label>
-                <textarea id="message" name="message" rows="5" cols="33"></textarea>
+                <div class="formData" data-error="Veuillez entrer 2 caractères ou plus pour le champ du prénom." data-error-visible="">
+                    <label for="first">Prénom</label>
+                    <input
+                    class="text-control" id="first" name="first" type="text"><br>
+                </div>                
+                <div class="formData" data-error="Veuillez entrer 2 caractères ou plus pour le champ du nom." data-error-visible="">
+                    <label for="last">Nom</label>
+                    <input
+                    class="text-control" id="last" name="last" type="text"><br>
+                </div>
+                <div class="formData" data-error="Veuillez entrer un email valide." data-error-visible="">
+                    <label for="email">Email</label>
+                    <input
+                    class="text-control" id="email" name="email" type="email"><br>
+                </div>
+                <div class="formData" data-error="Veuillez entrer un message." data-error-visible="">
+                    <label for="message">Votre message</label>
+                    <textarea id="message" name="message" rows="5" cols="33"></textarea><br>
+                </div>
                 <input class="btn-submit" type="submit" value="Envoyer">
             </form>
         </section>`;
@@ -171,35 +182,11 @@ export default function showPhotographerProfil (jsonObj) {
     banner.appendChild(myArticleBanner);
     portofolio.appendChild(myPortofolioFilter);
     myPortofolioFilter.outerHTML =`<h4>Trier par</h4> ${filterContainer.outerHTML}`;    
-    filterMenuclickHandler();
-        
+    filterMenuclickHandler();        
     portofolio.appendChild(myPortofolioHTML);
-
     
-  
-    function formModalHandler(){
-        let formModal = document.getElementById('form-modal'); 
-        let contactButton = document.querySelector("#banner > article > section:nth-child(1) > button");
-        contactButton.addEventListener("click",()=>formModal.style.display = "block");
-        let formModalCloser = document.querySelector("#form-modal > img");
-        let formModalBtnSubmit = document.querySelector("#form-modal > form > input.btn-submit");
-        let firstname =document.querySelector("#firstname");
-        let name = document.querySelector("#name");
-        let email = document.querySelector("#email");
-        let message = document.querySelector("#message");
-        formModalCloser.addEventListener("click",()=>formModal.style.display = "none");    
-        formModalBtnSubmit.addEventListener("click",(e)=>{
-            console.log(`Prénom : ${firstname.value} \n Nom : ${name.value} \n Email : ${email.value} \n Message : ${message.value}`);
-            e.preventDefault();   
-            formModal.style.display = "none";
-            firstname.value="";
-            name.value="";
-            email.value="";
-            message.value="";
-        });
-    }
-    formModalHandler();
-    
+    formHandler ();
+        
     function lightboxHandler(){
         const links = Array.from(document.querySelectorAll('a[href$=".jpg"]'));
         const gallery = links.map(link=>link.getAttribute('href'));
@@ -213,7 +200,7 @@ export default function showPhotographerProfil (jsonObj) {
     }
     
    
-  class Lightbox {
+    class Lightbox {
 
         constructor(url ,images, title, titles){
             this.element = this.buildDOM(url);
