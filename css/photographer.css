@@ -555,6 +555,9 @@ main > #portofolio .lightbox .lightbox__container h4 {
 main > #portofolio .lightbox .lightbox__container img {
   height: 67%;
 }
+main > #portofolio .lightbox .lightbox__container video {
+  height: 50%;
+}
 
 /* .menuHeader:hover + .items {
     display: block;

@@ -1,6 +1,5 @@
 import formHandler from "./modal-form.js"; 
 export default function showPhotographerProfil (jsonObj) {
-//    console.log(formHandler);
     // réupération de l'id de la page courante
     var myID = window.location.search.split("=").pop();
     var photographers = jsonObj.photographers;
@@ -15,12 +14,16 @@ export default function showPhotographerProfil (jsonObj) {
     myPortofolioHTML.classList="container";
     // Banner
     var myArticleBanner = document.createElement('article');
-    // var homePicture="";
+    // Portofolio
+    var myPortofolioFilter = document.createElement('article');
+    let filterContainer = document.createElement('div');
+    filterContainer.classList="filter"; 
+    let imgWrap = document.createElement('img');
     let zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
-
     let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
+    var hasclickedSession = [];
 
-    function bannerDisplay(){
+    function displayBanner(){
         var tags = photographer.tags;
         myArticleBanner.innerHTML = 
         `<section>         
@@ -73,18 +76,14 @@ export default function showPhotographerProfil (jsonObj) {
                 <input class="btn-submit" type="submit" value="Envoyer">
             </form>
         </section>`;
+        banner.appendChild(myArticleBanner);
+        portofolio.appendChild(myPortofolioFilter);  
+    filterMenu();  
+    formHandler (); 
     }
 
-
-    // Portofolio
-    var myPortofolioFilter = document.createElement('article');
-
-    let filterContainer = document.createElement('div');
-    filterContainer.classList="filter"; 
-    let imgWrap = document.createElement('img');
-
-    function filterMenu(){   
-    var filtersTab = ["Popularité", "Date", "Titre"];         
+    function filterMenu () {
+        var filtersTab = ["Popularité", "Date", "Titre"];         
         for (let i = 0; i < filtersTab.length; i++){
             var span = document.createElement('span');
             span.innerHTML=filtersTab[i];              
@@ -96,15 +95,14 @@ export default function showPhotographerProfil (jsonObj) {
                 imgWrap.classList="arrow";              
                 span.appendChild(imgWrap);
             }            
-        }        
-    }
-
-    function filterMenuclickHandler () {
+        }  
+        myPortofolioFilter.outerHTML =`<h4>Trier par</h4> ${filterContainer.outerHTML}`;
+        portofolio.appendChild(myPortofolioHTML);     
         const menu = document.querySelectorAll(".filter span");
         const lastSpans = document.querySelectorAll("span:not(.topFilterInMenu)");
         const imgArrow = document.querySelector(".arrow");
         media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) );
-                let filterSelect =document.querySelector("#portofolio > div.filter > span.topFilterInMenu");    
+        let filterSelect =document.querySelector("#portofolio > div.filter > span.topFilterInMenu");    
         // displayPortofolio ()  
         menu.forEach(span => {
             span.addEventListener("click", (event) => { 
@@ -145,10 +143,9 @@ export default function showPhotographerProfil (jsonObj) {
         });
          
     }
-
-    var hasclickedSession = [];
+    document.querySelector("#portofolio > div.container > article:nth-child(3) > img")
     function heartLikesHandler(){  
-        var hearts = document.querySelectorAll("#portofolio > div.container > article > img:nth-child(4)"); 
+        var hearts = document.querySelectorAll(".heart-likes"); 
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
                 let like = event.target.parentNode.querySelector("span");
                 let altTarget =event.target.getAttribute("alt");
@@ -174,41 +171,30 @@ export default function showPhotographerProfil (jsonObj) {
         }));
     }
 
-// affichage du menu de tri
-    bannerDisplay();
-    filterMenu();
+    function getFileExtension(filename) {
+        return filename.split('.').pop();
+    }
 
-
-    banner.appendChild(myArticleBanner);
-    portofolio.appendChild(myPortofolioFilter);
-    myPortofolioFilter.outerHTML =`<h4>Trier par</h4> ${filterContainer.outerHTML}`;    
-    filterMenuclickHandler();        
-    portofolio.appendChild(myPortofolioHTML);
-    
-    formHandler ();
-        
     function lightboxHandler(){
-        const links = Array.from(document.querySelectorAll('a[href$=".jpg"]'));
-        const gallery = links.map(link=>link.getAttribute('href'));
-        const titlesDOM = Array.from(document.querySelectorAll('a + h4'));        
+        const links = Array.from(document.querySelectorAll('.media'));    
+        const gallery = links.map(link=>link.getAttribute('src'));
+        const titlesDOM = Array.from(document.querySelectorAll('h4'));        
         const titles = titlesDOM.map(h4=>h4.textContent);
 
         links.forEach(link=>link.addEventListener('click', e => {
             e.preventDefault();
-            new Lightbox(e.currentTarget.getAttribute('href'), gallery, e.currentTarget.nextElementSibling.textContent, titles);
+            new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.nextElementSibling.textContent, titles);
         }))
     }
-    
-   
+       
     class Lightbox {
 
         constructor(url ,images, title, titles){
-            this.element = this.buildDOM(url);
+            this.element = this.buildDOM();
             this.images = images;
-            // this.title=title;
             this.titles=titles;
             this.loadImage(url, title);
-            this.onKeyUp=this.onKeyUp.bind(this)
+            this.onKeyUp=this.onKeyUp.bind(this);
             portofolio.appendChild(this.element);
             document.addEventListener('keyup',this.onKeyUp)
         }
@@ -217,21 +203,36 @@ export default function showPhotographerProfil (jsonObj) {
             this.url = null;            
             const titleHTML = document.createElement("h4");
             const image = document.createElement("img");
+            const video = document.createElement("video");
             const container = this.element.querySelector('.lightbox__container');
             const loader = document.createElement('div');
             loader.classList.add("lightbox__loader");
             container.innerHTML = '';
             container.appendChild(loader);
-            image.onload = ()=>{
-                container.removeChild(loader);
-                container.appendChild(image);
             titleHTML.textContent=title;
-                container.appendChild(titleHTML)
-                this.url = url ;
-                // this.title = title ;
+
+            if(getFileExtension(url)==="jpg"){         
+                image.onload = ()=>{
+                    container.removeChild(loader);
+                    container.appendChild(image);
+                    titleHTML.textContent=title;
+                    container.appendChild(titleHTML);
+                    this.url = url ;                
+                }
+                image.src = url;
             }
-            image.src = url;
-            titleHTML.textContent=title;
+            else if(getFileExtension(url)==="mp4"){     
+                    container.removeChild(loader);
+                    container.appendChild(video);
+                    titleHTML.textContent=title;
+                    container.appendChild(titleHTML);
+                    this.url = url ; 
+                    video.src = url;
+                    video.setAttribute("controls", "controls")
+                    video.setAttribute('role', 'button');
+
+            }
+
         }
 
         onKeyUp (e){
@@ -264,7 +265,7 @@ export default function showPhotographerProfil (jsonObj) {
             this.loadImage(this.images[i-1], this.titles[i]);
         }
 
-        buildDOM (url){
+        buildDOM (){
             const dom = document.createElement('div');
             dom.classList.add("lightbox");
             dom.innerHTML=`
@@ -280,10 +281,8 @@ export default function showPhotographerProfil (jsonObj) {
         }
 
     }
-    
            
     function MediasFactory() {
-
         this.createMedia = function (extension,mediaSingleID) {
             // var media = this.media;
             if (extension === "jpg") {
@@ -300,19 +299,16 @@ export default function showPhotographerProfil (jsonObj) {
     var Image = function (mediaSingleID) { 
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
             
-        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}"  alt="${this.med.title}"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`; 
+        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"><h4>${this.med.title}</h4></a><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`; 
 
     };
      
     var Video = function (mediaSingleID) {       
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
 
-        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px"><source src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`;               
+        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="media">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`;               
     };   
-        
-    function getFileExtension(filename) {
-        return filename.split('.').pop();
-    }
+    
 
     function displayPortofolio() {
         var factory = new MediasFactory();
@@ -331,6 +327,6 @@ export default function showPhotographerProfil (jsonObj) {
         }) 
     }
 
+    displayBanner();
     displayPortofolio();
-
 }
