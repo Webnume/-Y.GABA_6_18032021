@@ -5,34 +5,42 @@ export default function home (jsonObj) {
   let photographers = jsonObj;
   let tagsTab =["Portrait", "Art", "Fashion", "Architecture", "Travel", "Sport", "Animals", "Events"];  
   let myArticles = document.getElementsByTagName("article");
-  
+
+
+  function onKeyUp (e){
+    if(e.key==="Enter"){
+      tagFilter(e,e.target);   
+    }
+  }
+
+ 
   let tagsArray= [];
-  function clickHandler(){
+  function clickAndKeyboardHandler(){
+    document.addEventListener('keyup',onKeyUp);
     document.querySelectorAll('ul li').forEach(li => {
-      li.addEventListener('click', event => {
-        if (tagsArray.includes(event.target.textContent.substring(1).toLowerCase())) {
-            for( var i = 0; i < tagsArray.length; i++){  
-              if ( tagsArray[i] === li.textContent.substring(1).toLowerCase()) {  
-                tagsArray.splice(i, 1);
-              }
-            }             
-        } else if (!tagsArray.includes(li.textContent.toLowerCase()) ){
-          tagsArray.push(li.textContent.substring(1).toLowerCase());                      
-        }  
-        for (const a of document.querySelectorAll("li")) {
-          if (tagsArray.includes(a.textContent.substring(1).toLowerCase())) {
-            a.classList="up"; 
-          }else{
-            a.classList=""; 
-          }
-        }  
-        tagFilter();     
-      })
+      li.addEventListener('click', event => tagFilter(event,li))
     });      
   }
 
   // filter on tag click
-  function tagFilter() {
+  function tagFilter(event,li) {
+    if (tagsArray.includes(event.target.textContent.substring(1).toLowerCase())) {
+        for( var i = 0; i < tagsArray.length; i++){  
+          if ( tagsArray[i] === li.textContent.substring(1).toLowerCase()) {  
+            tagsArray.splice(i, 1);
+          }
+        }             
+    } else if (!tagsArray.includes(li.textContent.toLowerCase()) ){
+      tagsArray.push(li.textContent.substring(1).toLowerCase());                      
+    }  
+    for (const a of document.querySelectorAll("li")) {
+      if (tagsArray.includes(a.textContent.substring(1).toLowerCase())) {
+        a.classList="up"; 
+      }else{
+        a.classList=""; 
+      }
+    }  
+
     [...myArticles].forEach(article => {
         for (let photographer of photographers){    
           if(article.getAttribute("data-filter") === photographer.name){
@@ -46,6 +54,7 @@ export default function home (jsonObj) {
         }
     });
   }
+
   function haveAllTagsSelected(tags){    
     let intersection = tags.filter(t => tagsArray.includes(t)); 
     return intersection.length === tagsArray.length;
@@ -79,5 +88,5 @@ export default function home (jsonObj) {
   //Starting here
   navigationDisplay(myNav,tagsTab);
   mainDisplay(photographers);
-  clickHandler();
+  clickAndKeyboardHandler();
 }

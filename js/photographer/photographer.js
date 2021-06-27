@@ -96,6 +96,7 @@ export default function showPhotographerProfil (jsonObj) {
                 span.appendChild(imgWrap);
             }            
         }  
+        
         myPortofolioFilter.outerHTML =`<h4>Trier par</h4> ${filterContainer.outerHTML}`;
         portofolio.appendChild(myPortofolioHTML);     
         const menu = document.querySelectorAll(".filter span");
@@ -143,7 +144,7 @@ export default function showPhotographerProfil (jsonObj) {
         });
          
     }
-    document.querySelector("#portofolio > div.container > article:nth-child(3) > img")
+    
     function heartLikesHandler(){  
         var hearts = document.querySelectorAll(".heart-likes"); 
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
@@ -178,7 +179,7 @@ export default function showPhotographerProfil (jsonObj) {
     function lightboxHandler(){
         const links = Array.from(document.querySelectorAll('.media'));    
         const gallery = links.map(link=>link.getAttribute('src'));
-        const titlesDOM = Array.from(document.querySelectorAll('h4'));        
+        const titlesDOM = Array.from(document.querySelectorAll('.container h4'));        
         const titles = titlesDOM.map(h4=>h4.textContent);
 
         links.forEach(link=>link.addEventListener('click', e => {
@@ -255,14 +256,14 @@ export default function showPhotographerProfil (jsonObj) {
             e.preventDefault();
             let i = this.images.findIndex(image=>image === this.url);
             if (i === this.images.length-1){i = -1}
-            this.loadImage(this.images[i+1], this.titles[i+2]);
+            this.loadImage(this.images[i+1], this.titles[i+1]);
         }
 
         prev(e){
             e.preventDefault();
             let i = this.images.findIndex(image=>image === this.url);
             if (i === 0){i = this.images.length}
-            this.loadImage(this.images[i-1], this.titles[i]);
+            this.loadImage(this.images[i-1], this.titles[i-1]);
         }
 
         buildDOM (){

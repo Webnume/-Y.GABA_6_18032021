@@ -226,8 +226,8 @@ main > #banner article section .imgWrapper {
   }
 }
 main > #banner article section .imgWrapper img {
-  height: 222px;
-  transform: scale(1.3);
+  height: 100%;
+  transform: scale(1.5);
 }
 main > #banner article .priceBottom {
   display: flex;
@@ -519,6 +519,14 @@ main > #portofolio .lightbox .lightbox__closer {
   height: 42px;
   z-index: 25;
 }
+@media (max-width: 1024px) {
+  main > #portofolio .lightbox .lightbox__closer {
+    top: 146px;
+    right: 18px;
+    width: 17px;
+    height: 17px;
+  }
+}
 main > #portofolio .lightbox .lightbox__next, main > #portofolio .lightbox .lightbox__prev {
   border: none;
   background: url(../images/Lightbox-arrow.svg) center center/48px 30px no-repeat;
@@ -529,6 +537,11 @@ main > #portofolio .lightbox .lightbox__next, main > #portofolio .lightbox .ligh
   right: 0;
   margin-top: -14px;
   z-index: 21;
+}
+@media (max-width: 1024px) {
+  main > #portofolio .lightbox .lightbox__next, main > #portofolio .lightbox .lightbox__prev {
+    width: 40px;
+  }
 }
 main > #portofolio .lightbox .lightbox__prev {
   right: auto;
@@ -552,15 +565,14 @@ main > #portofolio .lightbox .lightbox__container .lightbox__loader {
 main > #portofolio .lightbox .lightbox__container h4 {
   color: #901C1C;
 }
-main > #portofolio .lightbox .lightbox__container img {
+main > #portofolio .lightbox .lightbox__container img, main > #portofolio .lightbox .lightbox__container video {
   height: 67%;
 }
-main > #portofolio .lightbox .lightbox__container video {
-  height: 50%;
+@media (max-width: 1024px) {
+  main > #portofolio .lightbox .lightbox__container img, main > #portofolio .lightbox .lightbox__container video {
+    height: auto;
+    width: 125%;
+  }
 }
-
-/* .menuHeader:hover + .items {
-    display: block;
-} */
 
 /*# sourceMappingURL=photographer.css.map */
