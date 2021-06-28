@@ -73,10 +73,11 @@ export default function home (jsonObj) {
 
   // mainContent
   function mainDisplay(photographers){  
+    section.innerHTML = '<h1>Nos photographes</h1>';
     photographers.map(photographer => {      
       let myArticle = document.createElement('article');
       myArticle.innerHTML = 
-      '<h1>Nos photographes</h1><a href="./photographer.html?id='+photographer.id+'"><div><img src="./images/PhotographersIDPhotos/'+photographer.portrait+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><p></p>';
+      '<a href="./photographer.html?id='+photographer.id+'"><div><img src="./images/PhotographersIDPhotos/'+photographer.portrait+'" alt="'+photographer.name+'"></div><h2>'+photographer.name+'</h2></a><p>'+photographer.city+', '+photographer.country+'</p><p>'+photographer.tagline+'</p><p>'+photographer.price+'€/jour</p><p></p>';
       let tags = photographer.tags;
       let myTagsUnderProfil = myArticle.querySelector('p:last-child');
       navigationDisplay(myTagsUnderProfil,tags);

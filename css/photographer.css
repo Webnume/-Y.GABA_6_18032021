@@ -256,7 +256,7 @@ main > #banner article #form-modal {
   width: 669px;
   z-index: 100;
   position: fixed;
-  top: 0;
+  top: 1%;
   left: 20%;
   display: none;
   padding: 15px 8%;
@@ -309,7 +309,7 @@ main > #banner article #form-modal form .text-control {
   padding: 8px;
   border-radius: 8px;
   font-size: 20px;
-  height: 48px;
+  height: 30px;
 }
 main > #banner article #form-modal form .formData[data-error]::after {
   content: attr(data-error);
@@ -335,7 +335,7 @@ main > #banner article #form-modal form input[data-error]::after {
   color: red;
 }
 main > #banner article #form-modal form label {
-  font-size: 36px;
+  font-size: 27px;
   color: #312E2E;
 }
 @media (max-width: 1024px) {
@@ -402,13 +402,14 @@ main > #portofolio .filter {
   position: absolute;
   left: 80px;
   z-index: 10;
+  margin: 0;
 }
 @media (max-width: 1024px) {
   main > #portofolio .filter {
     display: none;
   }
 }
-main > #portofolio .filter span {
+main > #portofolio .filter li {
   background: #901C1C;
   line-height: 57px;
   width: 150px;
@@ -419,21 +420,21 @@ main > #portofolio .filter span {
   cursor: pointer;
   display: block;
 }
-main > #portofolio .filter span:hover {
+main > #portofolio .filter li:hover {
   color: black;
   background: #D3573C;
 }
-main > #portofolio .filter span.topFilterInMenu {
+main > #portofolio .filter li.topFilterInMenu {
   position: relative;
 }
-main > #portofolio .filter span.topFilterInMenu .arrow {
+main > #portofolio .filter li.topFilterInMenu .arrow {
   position: absolute;
   font-size: 2rem;
   right: 1rem;
   top: 1.5rem;
   transition: all 200ms 0s ease-in-out;
 }
-main > #portofolio .filter span.topFilterInMenu .arrow.up {
+main > #portofolio .filter li.topFilterInMenu .arrow.up {
   transform: scaleY(-1);
 }
 main > #portofolio .filter .hidden {

@@ -16,7 +16,7 @@ export default function showPhotographerProfil (jsonObj) {
     var myArticleBanner = document.createElement('article');
     // Portofolio
     var myPortofolioFilter = document.createElement('article');
-    let filterContainer = document.createElement('div');
+    let filterContainer = document.createElement('ul');
     filterContainer.classList="filter"; 
     let imgWrap = document.createElement('img');
     let zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
@@ -37,7 +37,7 @@ export default function showPhotographerProfil (jsonObj) {
                     ).join('')}                
                 </ul>
             </div>
-        <button class="contactButton">Contactez-moi</button>
+            <button class="contactButton" id="contactButton">Contactez-moi</button>
             <div class="imgWrapper">
                 <img src="./images/PhotographersIDPhotos/${photographer.portrait}" alt="${photographer.name}">
             </div>   
@@ -46,102 +46,135 @@ export default function showPhotographerProfil (jsonObj) {
             <span>
                 ${allLikesSum} 
             </span>
-                <img src="./images/heart-solid-Black.svg">
+                <img src="./images/heart-solid-Black.svg" alt="likes">
             <span>${photographer.price}€ / jour</span>
         </p>
-        <section id="form-modal">
+        <section id="form-modal" aria-labelledby="contactButton">
             <h4>Contactez-moi</h4>
             <h4>${photographer.name}</h4>
-            <img class="close" src="./images/modal-form-closer.svg" alt="">
+            <img class="close" src="./images/modal-form-closer.svg" alt="Close contact form">
             <form action="#">
                 <div class="formData" data-error="Veuillez entrer 2 caractères ou plus pour le champ du prénom." data-error-visible="">
-                    <label for="first">Prénom</label>
+                    <label for="first" id="firstacc">Prénom</label>
                     <input
-                    class="text-control" id="first" name="first" type="text"><br>
+                    class="text-control" id="first" name="first" type="text" aria-labelledby="firstacc"><br>
                 </div>                
                 <div class="formData" data-error="Veuillez entrer 2 caractères ou plus pour le champ du nom." data-error-visible="">
-                    <label for="last">Nom</label>
+                    <label for="last" id="lastacc">Nom</label>
                     <input
-                    class="text-control" id="last" name="last" type="text"><br>
+                    class="text-control" id="last" name="last" type="text" aria-labelledby="lastacc"><br>
                 </div>
                 <div class="formData" data-error="Veuillez entrer un email valide." data-error-visible="">
-                    <label for="email">Email</label>
+                    <label for="email" id="emailacc">Email</label>
                     <input
-                    class="text-control" id="email" name="email" type="email"><br>
+                    class="text-control" id="email" name="email" type="email" aria-labelledby="emailacc"><br>
                 </div>
                 <div class="formData" data-error="Veuillez entrer un message." data-error-visible="">
-                    <label for="message">Votre message</label>
-                    <textarea id="message" name="message" rows="5" cols="33"></textarea><br>
+                    <label for="message" id="messageacc">Votre message</label>
+                    <textarea id="message" name="message" rows="5" cols="33" aria-labelledby="messageacc"></textarea><br>
                 </div>
                 <input class="btn-submit" type="submit" value="Envoyer">
             </form>
         </section>`;
         banner.appendChild(myArticleBanner);
         portofolio.appendChild(myPortofolioFilter);  
-    filterMenu();  
-    formHandler (); 
+        filterMenuDisplay();  
+        formHandler (); 
     }
 
-    function filterMenu () {
+    function onKeyUp (e){        
+    if(e.key==="Enter"){
+        console.log("enter");
+        mediaSort(e,e.target);   
+    }
+    else if(e.key==="ArrowUp"){
+        console.log("up");
+    }
+    else if(e.key==="ArrowDown"){
+        console.log("down");
+    }
+    }  
+    
+    function clickAndKeyboardHandler(){
+    const menu = document.querySelectorAll(".filter li");
+    // displayPortofolio   
+    menu.forEach(li => {
+        li.addEventListener("keyup", (event) =>  onKeyUp(event))
+    });    
+    menu.forEach(li => {
+        li.addEventListener("click", (event) =>  mediaSort(event))
+    });    
+    }
+
+    function myFunction() {
+    }
+
+    function mediaSort(event){
+        const lastLis = document.querySelectorAll("li:not(.topFilterInMenu)");
+        const imgArrow = document.querySelector(".arrow");
+        let filterSelect =document.querySelector("#portofolio > ul.filter > li.topFilterInMenu");   
+        media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
+        lastLis.forEach((li)=>li.classList.toggle("hidden"));
+        imgArrow.classList.toggle("up");   
+        var x = filterSelect.getAttribute("aria-expanded"); 
+        x = x=="true" ? "false" : "true" ;       
+        filterSelect.setAttribute("aria-expanded", x);
+        //gestion du swapping entre les lis du menu filter
+        if(event.target.textContent!==filterSelect.textContent &&event.target.textContent!==""){
+            let firstChildTextOnly = document.querySelector(".filter :not(img)");
+            let temp = firstChildTextOnly.firstChild.textContent;
+            firstChildTextOnly.firstChild.textContent=event.target.textContent;
+            event.target.textContent=temp;
+        
+            filterSelect.setAttribute('aria-expanded', 'false');
+            if(filterSelect.textContent==="Titre"){
+                media = media.sort(function(a, b){
+                    let x = a.title.toLowerCase();
+                    let y = b.title.toLowerCase();
+                    if (x < y) {return -1;}
+                    if (x > y) {return 1;}
+                    return 0;
+                });
+                myPortofolioHTML.innerHTML="";
+                displayPortofolio ();
+            }else if(filterSelect.textContent==="Date") {
+                media = media.sort((a,b) => new Date(b.date) - new Date(a.date));
+                myPortofolioHTML.innerHTML="";
+                displayPortofolio ();          
+            }else if(filterSelect.textContent==="Popularité") {                
+                media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
+                myPortofolioHTML.innerHTML="";   
+                displayPortofolio ();                            
+            }         
+        }
+    }
+      
+    function filterMenuDisplay () {
         var filtersTab = ["Popularité", "Date", "Titre"];         
         for (let i = 0; i < filtersTab.length; i++){
-            var span = document.createElement('span');
-            span.innerHTML=filtersTab[i];              
-            filterContainer.appendChild(span);                 
-            span.classList="hidden";   
+            var li = document.createElement('li');
+            li.innerHTML=filtersTab[i];              
+            filterContainer.appendChild(li);                 
+            li.classList="hidden";   
+            li.setAttribute("role", "listbox");
+            li.setAttribute("tabindex", i)
             if (i==0){
-                span.classList="topFilterInMenu";  
-                imgWrap.src = './images/dropdown-close.svg'
-                imgWrap.classList="arrow";              
-                span.appendChild(imgWrap);
+                li.classList="topFilterInMenu";  
+                imgWrap.src = './images/dropdown-close.svg';
+                imgWrap.classList="arrow";    
+                imgWrap.setAttribute("alt", "")          
+                li.appendChild(imgWrap);   
+                li.setAttribute("aria-labelledby", "orderBy");
+                li.setAttribute("role", "button");
+                li.setAttribute("aria-haspopup", "listbox");
+                li.setAttribute('aria-expanded', 'false');
+                //  role=”button”, aria-haspopup=”listbox”, aria-expanded. 
+                // Liste d’options : role=”listbox”, aria-activedescendant, aria-selected, aria-labelledby qui pointe vers l’input label
             }            
         }  
-        
-        myPortofolioFilter.outerHTML =`<h4>Trier par</h4> ${filterContainer.outerHTML}`;
-        portofolio.appendChild(myPortofolioHTML);     
-        const menu = document.querySelectorAll(".filter span");
-        const lastSpans = document.querySelectorAll("span:not(.topFilterInMenu)");
-        const imgArrow = document.querySelector(".arrow");
-        media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) );
-        let filterSelect =document.querySelector("#portofolio > div.filter > span.topFilterInMenu");    
-        // displayPortofolio ()  
-        menu.forEach(span => {
-            span.addEventListener("click", (event) => { 
-
-            lastSpans.forEach((span)=>span.classList.toggle("hidden"));
-            imgArrow.classList.toggle("up");       
-            //gestion du swapping entre les spans du menu filter
-            if(event.target.textContent!==filterSelect.textContent &&event.target.textContent!==""){
-                let firstChildTextOnly = document.querySelector(".filter :not(img)");
-                let temp = firstChildTextOnly.firstChild.textContent;
-                firstChildTextOnly.firstChild.textContent=event.target.textContent;
-                event.target.textContent=temp;
-
-
-                // console.log(filterSelect.textContent);
-               
-                if(filterSelect.textContent==="Titre"){
-                    media = media.sort(function(a, b){
-                        let x = a.title.toLowerCase();
-                        let y = b.title.toLowerCase();
-                        if (x < y) {return -1;}
-                        if (x > y) {return 1;}
-                        return 0;
-                    });
-                    myPortofolioHTML.innerHTML="";
-                    displayPortofolio ();
-                }else if(filterSelect.textContent==="Date") {
-                    media = media.sort((a,b) => new Date(b.date) - new Date(a.date));
-                    myPortofolioHTML.innerHTML="";
-                    displayPortofolio ();          
-                }else if(filterSelect.textContent==="Popularité") {                
-                    media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
-                    myPortofolioHTML.innerHTML="";   
-                    displayPortofolio ();                            
-                }         
-            }      
-        })
-        });
+        myPortofolioFilter.outerHTML =`<h4 id="orderBy">Trier par</h4> ${filterContainer.outerHTML}`;
+        portofolio.appendChild(myPortofolioHTML);   
+        clickAndKeyboardHandler()
          
     }
     
@@ -176,6 +209,52 @@ export default function showPhotographerProfil (jsonObj) {
         return filename.split('.').pop();
     }
 
+    //Portofolio
+    function MediasFactory() {
+        this.createMedia = function (extension,mediaSingleID) {
+            // var media = this.media;
+            if (extension === "jpg") {
+                new Image(mediaSingleID);
+            } else if (extension === "mp4") {
+                new Video(mediaSingleID);
+            } 
+            heartLikesHandler(); 
+            lightboxHandler();
+            return media;    
+        }
+    }
+     
+    var Image = function (mediaSingleID) { 
+        this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
+            
+        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
+
+    };
+     
+    var Video = function (mediaSingleID) {       
+        this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
+
+        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="media">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`;               
+    };   
+    
+    function displayPortofolio() {
+        var factory = new MediasFactory();
+        var extension ;
+        var mediaSingleID;
+        media.map(med=>{
+            extension = med.image ?  getFileExtension(med.image) : getFileExtension(med.video);
+            if (extension==="jpg"){
+                mediaSingleID = med.id;
+                factory.createMedia("jpg",mediaSingleID); 
+            }else if (extension==="mp4"){
+                mediaSingleID = med.id;
+                factory.createMedia("mp4",mediaSingleID);
+
+            }
+        }) 
+    }
+
+    // LightBox
     function lightboxHandler(){
         const links = Array.from(document.querySelectorAll('.media'));    
         const gallery = links.map(link=>link.getAttribute('src'));
@@ -184,7 +263,7 @@ export default function showPhotographerProfil (jsonObj) {
 
         links.forEach(link=>link.addEventListener('click', e => {
             e.preventDefault();
-            new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.nextElementSibling.textContent, titles);
+            new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.title, titles);
         }))
     }
        
@@ -216,6 +295,7 @@ export default function showPhotographerProfil (jsonObj) {
                 image.onload = ()=>{
                     container.removeChild(loader);
                     container.appendChild(image);
+                    image.setAttribute("alt", title)
                     titleHTML.textContent=title;
                     container.appendChild(titleHTML);
                     this.url = url ;                
@@ -268,11 +348,12 @@ export default function showPhotographerProfil (jsonObj) {
 
         buildDOM (){
             const dom = document.createElement('div');
+            dom.setAttribute("aria-label","image closeup view");
             dom.classList.add("lightbox");
             dom.innerHTML=`
-            <button class="lightbox__closer"></button>
-            <button class="lightbox__next"></button>                
-            <button class="lightbox__prev"></button>
+            <button class="lightbox__closer" aria-label="Close dialog"></button>
+            <button class="lightbox__next"  aria-label="Next image"></button>                
+            <button class="lightbox__prev"  aria-label="Previous image"></button>
             <div class="lightbox__container"></div>
             </div>`;
             dom.querySelector('.lightbox__closer').addEventListener('click', this.close.bind(this));
@@ -282,51 +363,7 @@ export default function showPhotographerProfil (jsonObj) {
         }
 
     }
-           
-    function MediasFactory() {
-        this.createMedia = function (extension,mediaSingleID) {
-            // var media = this.media;
-            if (extension === "jpg") {
-                new Image(mediaSingleID);
-            } else if (extension === "mp4") {
-                new Video(mediaSingleID);
-            } 
-            heartLikesHandler(); 
-            lightboxHandler();
-            return media;    
-        }
-    }
-     
-    var Image = function (mediaSingleID) { 
-        this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
-            
-        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"><h4>${this.med.title}</h4></a><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`; 
-
-    };
-     
-    var Video = function (mediaSingleID) {       
-        this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
-
-        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="media">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`;               
-    };   
-    
-
-    function displayPortofolio() {
-        var factory = new MediasFactory();
-        var extension ;
-        var mediaSingleID;
-        media.map(med=>{
-            extension = med.image ?  getFileExtension(med.image) : getFileExtension(med.video);
-            if (extension==="jpg"){
-                mediaSingleID = med.id;
-                factory.createMedia("jpg",mediaSingleID); 
-            }else if (extension==="mp4"){
-                mediaSingleID = med.id;
-                factory.createMedia("mp4",mediaSingleID);
-
-            }
-        }) 
-    }
+       
 
     displayBanner();
     displayPortofolio();

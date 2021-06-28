@@ -225,7 +225,7 @@ main {
         width: 669px;
         z-index: 100;
         position: fixed;
-        top: 0;
+        top: 1%;
         left: 20%;   
         display: none;  
         padding: 15px 8%;      
@@ -268,7 +268,7 @@ main {
             padding: 8px;
             border-radius: 8px;
             font-size: 20px;
-            height: 48px;
+            height: 30px;
           }
           & .formData[data-error]::after {
             content: attr(data-error);
@@ -294,7 +294,7 @@ main {
               color: red;
           }          
           & label{
-            font-size: 36px;
+            font-size: 27px;
             color: $greyspecial;
             @media (max-width:1024px){
               margin-top: 2rem;
@@ -360,11 +360,12 @@ main {
       position: absolute;
       left: 80px;
       z-index: 10;        
+      margin: 0;
       @media (max-width:1024px){
         display: none;
       }
       
-      & span{
+      & li{
         background: $h1color;
         line-height: 57px;
         width: 150px;
