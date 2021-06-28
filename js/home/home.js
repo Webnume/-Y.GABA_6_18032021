@@ -86,6 +86,19 @@ export default function home (jsonObj) {
     });
   }  
   
+  //ancre vers le main
+  var myquickMainContent = document.getElementById("quickMainContent");
+  myquickMainContent.style.display = "none"
+  var myScrollFunc = function() {
+    var y = window.scrollY;
+    if (y >= 300) {
+      myquickMainContent.style.display = "block"
+    } else {
+      myquickMainContent.style.display = "none"
+    }
+  };  
+  window.addEventListener("scroll", myScrollFunc);
+
   //Starting here
   navigationDisplay(myNav,tagsTab);
   mainDisplay(photographers);

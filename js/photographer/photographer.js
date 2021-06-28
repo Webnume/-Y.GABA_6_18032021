@@ -83,16 +83,16 @@ export default function showPhotographerProfil (jsonObj) {
     }
 
     function onKeyUp (e){        
-    if(e.key==="Enter"){
-        console.log("enter");
-        mediaSort(e,e.target);   
-    }
-    else if(e.key==="ArrowUp"){
-        console.log("up");
-    }
-    else if(e.key==="ArrowDown"){
-        console.log("down");
-    }
+        if(e.key==="Enter"){
+            console.log("enter");
+            mediaSort(e,e.target);   
+        }
+        else if(e.key==="ArrowUp"){
+            console.log("up");
+        }
+        else if(e.key==="ArrowDown"){
+            console.log("down");
+        }
     }  
     
     function clickAndKeyboardHandler(){
@@ -106,8 +106,6 @@ export default function showPhotographerProfil (jsonObj) {
     });    
     }
 
-    function myFunction() {
-    }
 
     function mediaSort(event){
         const lastLis = document.querySelectorAll("li:not(.topFilterInMenu)");
@@ -174,7 +172,7 @@ export default function showPhotographerProfil (jsonObj) {
         }  
         myPortofolioFilter.outerHTML =`<h4 id="orderBy">Trier par</h4> ${filterContainer.outerHTML}`;
         portofolio.appendChild(myPortofolioHTML);   
-        clickAndKeyboardHandler()
+        clickAndKeyboardHandler();
          
     }
     
@@ -227,7 +225,7 @@ export default function showPhotographerProfil (jsonObj) {
     var Image = function (mediaSingleID) { 
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
             
-        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
+        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`; 
 
     };
      
@@ -266,7 +264,7 @@ export default function showPhotographerProfil (jsonObj) {
             new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.title, titles);
         }))
     }
-       
+   
     class Lightbox {
 
         constructor(url ,images, title, titles){
@@ -289,14 +287,14 @@ export default function showPhotographerProfil (jsonObj) {
             loader.classList.add("lightbox__loader");
             container.innerHTML = '';
             container.appendChild(loader);
-            titleHTML.textContent=title;
+            // titleHTML.textContent=title;
 
             if(getFileExtension(url)==="jpg"){         
                 image.onload = ()=>{
                     container.removeChild(loader);
-                    container.appendChild(image);
                     image.setAttribute("alt", title)
                     titleHTML.textContent=title;
+                    container.appendChild(image);
                     container.appendChild(titleHTML);
                     this.url = url ;                
                 }
@@ -364,7 +362,6 @@ export default function showPhotographerProfil (jsonObj) {
 
     }
        
-
     displayBanner();
     displayPortofolio();
 }
