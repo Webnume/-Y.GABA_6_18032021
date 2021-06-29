@@ -180,7 +180,7 @@ export default function showPhotographerProfil (jsonObj) {
         var hearts = document.querySelectorAll(".heart-likes"); 
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
                 let like = event.target.parentNode.querySelector("span");
-                let altTarget =event.target.getAttribute("alt");
+                let altTarget =event.target.parentNode.querySelector("h4").textContent;
                 if(medi.title===altTarget &&  !hasclickedSession.includes(altTarget)){
                     medi.likes+=1;
                     like.innerHTML=medi.likes;
@@ -225,14 +225,14 @@ export default function showPhotographerProfil (jsonObj) {
     var Image = function (mediaSingleID) { 
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
             
-        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`; 
+        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
 
     };
      
     var Video = function (mediaSingleID) {       
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
 
-        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="media">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="${this.med.title}"></article>`;               
+        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="media">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`;               
     };   
     
     function displayPortofolio() {
@@ -258,10 +258,9 @@ export default function showPhotographerProfil (jsonObj) {
         const gallery = links.map(link=>link.getAttribute('src'));
         const titlesDOM = Array.from(document.querySelectorAll('.container h4'));        
         const titles = titlesDOM.map(h4=>h4.textContent);
-
         links.forEach(link=>link.addEventListener('click', e => {
             e.preventDefault();
-            new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.title, titles);
+            new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.parentNode.parentNode.querySelector("h4").textContent, titles);
         }))
     }
    
