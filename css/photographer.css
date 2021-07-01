@@ -384,16 +384,19 @@ main > #portofolio {
   flex-direction: row;
   flex-wrap: wrap;
 }
-main > #portofolio h4 {
+main > #portofolio .filter-container {
+  display: flex;
+}
+main > #portofolio .filter-container h4 {
   margin-right: 1rem;
   width: unset;
 }
 @media (max-width: 1024px) {
-  main > #portofolio h4:first-child {
+  main > #portofolio .filter-container h4:first-child {
     display: none;
   }
 }
-main > #portofolio .filter {
+main > #portofolio .filter-container .filter {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -404,12 +407,7 @@ main > #portofolio .filter {
   z-index: 10;
   margin: 0;
 }
-@media (max-width: 1024px) {
-  main > #portofolio .filter {
-    display: none;
-  }
-}
-main > #portofolio .filter li {
+main > #portofolio .filter-container .filter li {
   background: #901C1C;
   line-height: 57px;
   width: 150px;
@@ -420,24 +418,24 @@ main > #portofolio .filter li {
   cursor: pointer;
   display: block;
 }
-main > #portofolio .filter li:hover {
+main > #portofolio .filter-container .filter li:hover, main > #portofolio .filter-container .filter li.is-selected {
   color: black;
   background: #D3573C;
 }
-main > #portofolio .filter li.topFilterInMenu {
+main > #portofolio .filter-container .filter li.topFilterInMenu {
   position: relative;
 }
-main > #portofolio .filter li.topFilterInMenu .arrow {
+main > #portofolio .filter-container .filter li.topFilterInMenu .arrow {
   position: absolute;
   font-size: 2rem;
   right: 1rem;
   top: 1.5rem;
   transition: all 200ms 0s ease-in-out;
 }
-main > #portofolio .filter li.topFilterInMenu .arrow.up {
+main > #portofolio .filter-container .filter li.topFilterInMenu .arrow.up {
   transform: scaleY(-1);
 }
-main > #portofolio .filter .hidden {
+main > #portofolio .filter-container .filter .hidden {
   display: none;
 }
 main > #portofolio .container {
@@ -468,6 +466,9 @@ main > #portofolio .container article img:first-child {
     width: 335px;
     height: 190px;
   }
+}
+main > #portofolio .container article .medias {
+  cursor: pointer;
 }
 main > #portofolio .container article h4 {
   color: #901C1C;

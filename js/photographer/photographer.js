@@ -16,6 +16,7 @@ export default function showPhotographerProfil (jsonObj) {
     var myArticleBanner = document.createElement('article');
     // Portofolio
     var myPortofolioFilter = document.createElement('article');
+    myPortofolioFilter.classList="filter-container";
     let filterContainer = document.createElement('ul');
     filterContainer.classList="filter"; 
     let imgWrap = document.createElement('img');
@@ -49,7 +50,7 @@ export default function showPhotographerProfil (jsonObj) {
                 <img src="./images/heart-solid-Black.svg" alt="likes">
             <span>${photographer.price}€ / jour</span>
         </p>
-        <section id="form-modal" aria-labelledby="contactButton">
+        <section id="form-modal" aria-labelledby="contactButton" role=”dialog”>
             <h4>Contactez-moi</h4>
             <h4>${photographer.name}</h4>
             <img class="close" src="./images/modal-form-closer.svg" alt="Close contact form">
@@ -82,7 +83,7 @@ export default function showPhotographerProfil (jsonObj) {
         formHandler (); 
     }
 
-    function onKeyUp (e){        
+    function onKeyUpMenuFilter (e){        
         if(e.key==="Enter"){
             console.log("enter");
             mediaSort(e,e.target);   
@@ -99,7 +100,7 @@ export default function showPhotographerProfil (jsonObj) {
     const menu = document.querySelectorAll(".filter li");
     // displayPortofolio   
     menu.forEach(li => {
-        li.addEventListener("keyup", (event) =>  onKeyUp(event))
+        li.addEventListener("keyup", (event) =>  onKeyUpMenuFilter(event))
     });    
     menu.forEach(li => {
         li.addEventListener("click", (event) =>  mediaSort(event))
@@ -108,15 +109,16 @@ export default function showPhotographerProfil (jsonObj) {
 
 
     function mediaSort(event){
+console.log(event)
         const lastLis = document.querySelectorAll("li:not(.topFilterInMenu)");
         const imgArrow = document.querySelector(".arrow");
-        let filterSelect =document.querySelector("#portofolio > ul.filter > li.topFilterInMenu");   
+        let filterSelect =document.querySelector("#portofolio > article > ul > li.topFilterInMenu");   
         media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
         lastLis.forEach((li)=>li.classList.toggle("hidden"));
         imgArrow.classList.toggle("up");   
-        var x = filterSelect.getAttribute("aria-expanded"); 
-        x = x=="true" ? "false" : "true" ;       
-        filterSelect.setAttribute("aria-expanded", x);
+        // var x = filterSelect.getAttribute("aria-expanded"); 
+        // x = x=="true" ? "false" : "true" ;       
+        // filterSelect.setAttribute("aria-expanded", x);
         //gestion du swapping entre les lis du menu filter
         if(event.target.textContent!==filterSelect.textContent &&event.target.textContent!==""){
             let firstChildTextOnly = document.querySelector(".filter :not(img)");
@@ -124,7 +126,7 @@ export default function showPhotographerProfil (jsonObj) {
             firstChildTextOnly.firstChild.textContent=event.target.textContent;
             event.target.textContent=temp;
         
-            filterSelect.setAttribute('aria-expanded', 'false');
+            // filterSelect.setAttribute('aria-expanded', 'false');
             if(filterSelect.textContent==="Titre"){
                 media = media.sort(function(a, b){
                     let x = a.title.toLowerCase();
@@ -148,34 +150,77 @@ export default function showPhotographerProfil (jsonObj) {
     }
       
     function filterMenuDisplay () {
-        var filtersTab = ["Popularité", "Date", "Titre"];         
-        for (let i = 0; i < filtersTab.length; i++){
-            var li = document.createElement('li');
-            li.innerHTML=filtersTab[i];              
-            filterContainer.appendChild(li);                 
-            li.classList="hidden";   
-            li.setAttribute("role", "listbox");
-            li.setAttribute("tabindex", i)
-            if (i==0){
-                li.classList="topFilterInMenu";  
-                imgWrap.src = './images/dropdown-close.svg';
-                imgWrap.classList="arrow";    
-                imgWrap.setAttribute("alt", "")          
-                li.appendChild(imgWrap);   
-                li.setAttribute("aria-labelledby", "orderBy");
-                li.setAttribute("role", "button");
-                li.setAttribute("aria-haspopup", "listbox");
-                li.setAttribute('aria-expanded', 'false');
-                //  role=”button”, aria-haspopup=”listbox”, aria-expanded. 
-                // Liste d’options : role=”listbox”, aria-activedescendant, aria-selected, aria-labelledby qui pointe vers l’input label
-            }            
-        }  
-        myPortofolioFilter.outerHTML =`<h4 id="orderBy">Trier par</h4> ${filterContainer.outerHTML}`;
+        //  role=”button”, aria-haspopup=”listbox”, aria-expanded. 
+        // Liste d’options : role=”listbox”, aria-activedescendant, aria-selected, aria-labelledby qui pointe vers l’input label
+
+
+
+//  <ul class="filter" role="button" tabindex="0" aria-labelledby="orderBy" aria-haspopup="listbox" aria-expanded="false" aria-activedescendant="${"xxxx"}">
+//             <li class="topFilterInMenu">Popularité<img src="./images/dropdown-close.svg" class="arrow" alt=""></li>
+//             <li role="listbox" class="hidden" id="date">Date</li>
+//             <li role="listbox" class="hidden" id="titre">Titre</li>
+//         </ul>
+        myPortofolioFilter.innerHTML=`  
+        <h4 id="orderBy">Trier par</h4>
+        <ul class="filter" role="listbox" tabindex="0" aria-activedescendant="popularité">
+            <li role="listbox" id="popularité"  class="topFilterInMenu">Popularité<img src="./images/dropdown-close.svg" class="arrow" alt=""></li>
+            <li role="option" class="hidden" id="date">Date</li>
+            <li role="option" class="hidden" id="titre">Titre</li>
+        </ul>
+        
+        `
+        
+        const listbox = document.querySelector('[role="listbox"]')
+        const characters = [...listbox.children]
+        
+        listbox.addEventListener('click', event => {
+          const option = event.target.closest('li');
+          if (!option) return
+console.log(option);
+          // Sets aria-activedescendant value
+          listbox.setAttribute('aria-activedescendant', option.id)
+        
+          // Change visual appearance
+          characters.forEach(element => element.classList.remove('is-selected'))
+          option.classList.add('is-selected')
+        })
+        
+        
+        listbox.addEventListener('keydown', event => {
+          const { key } = event
+          if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'Enter') return
+        
+          const activeElementID = listbox.getAttribute('aria-activedescendant')
+          const activeElement = listbox.querySelector('#' + activeElementID)
+        
+          let selectedOption
+          if (key === 'ArrowDown') selectedOption = activeElement.nextElementSibling
+          if (key === 'ArrowUp') selectedOption = activeElement.previousElementSibling   
+
+          if (key === 'Enter')  
+        //   selectedOption = activeElement 
+// console.log(event.currentTarget);  
+           mediaSort(activeElement)    
+          
+          if (selectedOption) {
+            // Sets aria-activedescendant value
+            listbox.setAttribute('aria-activedescendant', selectedOption.id)
+        
+            // Change visual appearance
+            characters.forEach(element => element.classList.remove('is-selected'))
+            selectedOption.classList.add('is-selected')
+          }
+        })
+
+
+
+
         portofolio.appendChild(myPortofolioHTML);   
         clickAndKeyboardHandler();
-         
+          
     }
-    
+     
+
     function heartLikesHandler(){  
         var hearts = document.querySelectorAll(".heart-likes"); 
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
@@ -225,14 +270,14 @@ export default function showPhotographerProfil (jsonObj) {
     var Image = function (mediaSingleID) { 
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
             
-        myPortofolioHTML.innerHTML  +=  `<article><a href="./images/${zeroSpaceFolder}/${this.med.image}"><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="media"></a><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
+        myPortofolioHTML.innerHTML  +=  `<article><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="medias" tabindex="0"><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
 
     };
      
     var Video = function (mediaSingleID) {       
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
 
-        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="media">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`;               
+        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="medias">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`;               
     };   
     
     function displayPortofolio() {
@@ -254,13 +299,19 @@ export default function showPhotographerProfil (jsonObj) {
 
     // LightBox
     function lightboxHandler(){
-        const links = Array.from(document.querySelectorAll('.media'));    
+        const links = Array.from(document.querySelectorAll('.medias'));    
         const gallery = links.map(link=>link.getAttribute('src'));
         const titlesDOM = Array.from(document.querySelectorAll('.container h4'));        
         const titles = titlesDOM.map(h4=>h4.textContent);
         links.forEach(link=>link.addEventListener('click', e => {
             e.preventDefault();
             new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.parentNode.parentNode.querySelector("h4").textContent, titles);
+        }));
+        links.forEach(link=>link.addEventListener('keyup', event => {       
+            event.preventDefault();         
+            if(event.key==="Enter"){
+                new Lightbox(event.currentTarget.getAttribute('src'), gallery, event.currentTarget.parentNode.querySelector("h4").textContent, titles);  
+            }
         }))
     }
    

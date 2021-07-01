@@ -19,7 +19,8 @@ export default function formHandler () {
       modalbg.style.display = "block";
     }
     // close modal event
-    modalCloser.addEventListener("click", closeModal);
+    modalCloser.addEventListener("click", closeModal);    
+    document.addEventListener("keyup", e=>{if(e.key==="Escape"){closeModal()}});
     // close modal form
     function closeModal() {
       modalbg.style.display = "none";
