@@ -19,7 +19,6 @@ export default function showPhotographerProfil (jsonObj) {
     myPortofolioFilter.classList="filter-container";
     let filterContainer = document.createElement('ul');
     filterContainer.classList="filter"; 
-    let imgWrap = document.createElement('img');
     let zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
     let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
     var hasclickedSession = [];
@@ -83,50 +82,30 @@ export default function showPhotographerProfil (jsonObj) {
         formHandler (); 
     }
 
-    function onKeyUpMenuFilter (e){        
-        if(e.key==="Enter"){
-            console.log("enter");
-            mediaSort(e,e.target);   
-        }
-        else if(e.key==="ArrowUp"){
-            console.log("up");
-        }
-        else if(e.key==="ArrowDown"){
-            console.log("down");
-        }
-    }  
-    
-    function clickAndKeyboardHandler(){
-    const menu = document.querySelectorAll(".filter li");
-    // displayPortofolio   
-    menu.forEach(li => {
-        li.addEventListener("keyup", (event) =>  onKeyUpMenuFilter(event))
-    });    
-    menu.forEach(li => {
-        li.addEventListener("click", (event) =>  mediaSort(event))
-    });    
-    }
-
-
-    function mediaSort(event){
-console.log(event)
+    function mediaSort(event,activeElement){
         const lastLis = document.querySelectorAll("li:not(.topFilterInMenu)");
         const imgArrow = document.querySelector(".arrow");
         let filterSelect =document.querySelector("#portofolio > article > ul > li.topFilterInMenu");   
         media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
         lastLis.forEach((li)=>li.classList.toggle("hidden"));
         imgArrow.classList.toggle("up");   
-        // var x = filterSelect.getAttribute("aria-expanded"); 
-        // x = x=="true" ? "false" : "true" ;       
-        // filterSelect.setAttribute("aria-expanded", x);
-        //gestion du swapping entre les lis du menu filter
-        if(event.target.textContent!==filterSelect.textContent &&event.target.textContent!==""){
+        let valueSort ;
+        if(event.target!==undefined){
+            valueSort=event.target.textContent;
+        }else{
+            valueSort=event;
+        }
+        if(valueSort!==filterSelect.textContent && valueSort!==""){
+
+        // lastLis.forEach((li)=>li.classList.toggle("hidden"));
             let firstChildTextOnly = document.querySelector(".filter :not(img)");
             let temp = firstChildTextOnly.firstChild.textContent;
-            firstChildTextOnly.firstChild.textContent=event.target.textContent;
-            event.target.textContent=temp;
+            firstChildTextOnly.firstChild.textContent=valueSort;
+            firstChildTextOnly.id=valueSort;
+        lastLis.forEach((li)=>{if(li===activeElement){li.id=temp; li.textContent=temp}});
+            (!event.target) ? "" : event.target.textContent=temp;    
+            (!event.target) ? "" : event.target.id=temp;       
         
-            // filterSelect.setAttribute('aria-expanded', 'false');
             if(filterSelect.textContent==="Titre"){
                 media = media.sort(function(a, b){
                     let x = a.title.toLowerCase();
@@ -153,41 +132,44 @@ console.log(event)
         //  role=”button”, aria-haspopup=”listbox”, aria-expanded. 
         // Liste d’options : role=”listbox”, aria-activedescendant, aria-selected, aria-labelledby qui pointe vers l’input label
 
-
-
-//  <ul class="filter" role="button" tabindex="0" aria-labelledby="orderBy" aria-haspopup="listbox" aria-expanded="false" aria-activedescendant="${"xxxx"}">
-//             <li class="topFilterInMenu">Popularité<img src="./images/dropdown-close.svg" class="arrow" alt=""></li>
-//             <li role="listbox" class="hidden" id="date">Date</li>
-//             <li role="listbox" class="hidden" id="titre">Titre</li>
-//         </ul>
         myPortofolioFilter.innerHTML=`  
         <h4 id="orderBy">Trier par</h4>
-        <ul class="filter" role="listbox" tabindex="0" aria-activedescendant="popularité">
-            <li role="listbox" id="popularité"  class="topFilterInMenu">Popularité<img src="./images/dropdown-close.svg" class="arrow" alt=""></li>
-            <li role="option" class="hidden" id="date">Date</li>
-            <li role="option" class="hidden" id="titre">Titre</li>
-        </ul>
+        <ul class="filter" aria-labelledby="orderBy" role="button" aria-haspopup="listbox", aria-expanded="false" tabindex="0" aria-activedescendant="Popularité">
+            <li role="listbox" id="Popularité"  class="topFilterInMenu">Popularité<img src="./images/dropdown-close.svg" class="arrow" alt=""></li>
+            <li role="listbox" class="hidden" id="Date">Date</li>
+            <li role="listbox" class="hidden" id="Titre">Titre</li>
+        </ul>`
         
-        `
-        
-        const listbox = document.querySelector('[role="listbox"]')
-        const characters = [...listbox.children]
+        const menu = document.querySelectorAll(".filter li");
+        menu.forEach(li => {
+            li.addEventListener("click", (event) =>  mediaSort(event))
+        });    
+
+        const listbox = document.querySelector('[role="button"]')
+        const characters = [...listbox.children]  
+          var x = listbox.getAttribute("aria-expanded"); 
+          x = (x==="true") ? "false" : "true" ;       
+          listbox.setAttribute("aria-expanded", x);
         
         listbox.addEventListener('click', event => {
           const option = event.target.closest('li');
           if (!option) return
-console.log(option);
+
           // Sets aria-activedescendant value
-          listbox.setAttribute('aria-activedescendant', option.id)
+          listbox.setAttribute('aria-activedescendant', option.id);
         
           // Change visual appearance
-          characters.forEach(element => element.classList.remove('is-selected'))
+          characters.forEach(element => {
+              element.classList.remove('is-selected');
+              element.removeAttribute("aria-selected")
+          })
           option.classList.add('is-selected')
+          option.setAttribute("aria-selected", "true")
         })
         
         
         listbox.addEventListener('keydown', event => {
-          const { key } = event
+          const { key } = event 
           if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'Enter') return
         
           const activeElementID = listbox.getAttribute('aria-activedescendant')
@@ -197,29 +179,22 @@ console.log(option);
           if (key === 'ArrowDown') selectedOption = activeElement.nextElementSibling
           if (key === 'ArrowUp') selectedOption = activeElement.previousElementSibling   
 
-          if (key === 'Enter')  
-        //   selectedOption = activeElement 
-// console.log(event.currentTarget);  
-           mediaSort(activeElement)    
-          
+          if (key === 'Enter') mediaSort(activeElementID,activeElement)  
           if (selectedOption) {
             // Sets aria-activedescendant value
             listbox.setAttribute('aria-activedescendant', selectedOption.id)
         
             // Change visual appearance
-            characters.forEach(element => element.classList.remove('is-selected'))
-            selectedOption.classList.add('is-selected')
+            characters.forEach(element => element.classList.remove('is-selected'));
+            selectedOption.classList.add('is-selected'); 
           }
         })
 
 
-
-
         portofolio.appendChild(myPortofolioHTML);   
-        clickAndKeyboardHandler();
           
     }
-     
+
 
     function heartLikesHandler(){  
         var hearts = document.querySelectorAll(".heart-likes"); 
@@ -269,15 +244,14 @@ console.log(option);
      
     var Image = function (mediaSingleID) { 
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
-            
-        myPortofolioHTML.innerHTML  +=  `<article><img src="./images/${zeroSpaceFolder}/${this.med.image}" alt="${this.med.title}" class="medias" tabindex="0"><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
+        myPortofolioHTML.innerHTML  +=  `<article><img src="./images/${zeroSpaceFolder}/${this.med.image}" title="${this.med.title}" alt="${this.med.altText}" class="medias" tabindex="0"><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
 
     };
      
     var Video = function (mediaSingleID) {       
         this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
 
-        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="medias">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`;               
+        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="medias" alt="${this.med.altText}">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`;               
     };   
     
     function displayPortofolio() {
@@ -303,31 +277,33 @@ console.log(option);
         const gallery = links.map(link=>link.getAttribute('src'));
         const titlesDOM = Array.from(document.querySelectorAll('.container h4'));        
         const titles = titlesDOM.map(h4=>h4.textContent);
+        const altTexts = links.map(link=>link.getAttribute('alt'));
         links.forEach(link=>link.addEventListener('click', e => {
             e.preventDefault();
-            new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.parentNode.parentNode.querySelector("h4").textContent, titles);
+            new Lightbox(e.currentTarget.getAttribute('src'), gallery, e.currentTarget.parentNode.parentNode.querySelector("h4").textContent, titles, e.currentTarget.getAttribute('alt'),altTexts);
         }));
         links.forEach(link=>link.addEventListener('keyup', event => {       
             event.preventDefault();         
             if(event.key==="Enter"){
-                new Lightbox(event.currentTarget.getAttribute('src'), gallery, event.currentTarget.parentNode.querySelector("h4").textContent, titles);  
+                new Lightbox(event.currentTarget.getAttribute('src'), gallery, event.currentTarget.parentNode.querySelector("h4").textContent, titles, event.currentTarget.getAttribute('alt'),altTexts);  
             }
         }))
     }
    
     class Lightbox {
 
-        constructor(url ,images, title, titles){
+        constructor(url ,images, title, titles,altText,altTexts){
             this.element = this.buildDOM();
             this.images = images;
             this.titles=titles;
-            this.loadImage(url, title);
+            this.altTexts=altTexts;
+            this.loadImage(url, title,altText);
             this.onKeyUp=this.onKeyUp.bind(this);
             portofolio.appendChild(this.element);
             document.addEventListener('keyup',this.onKeyUp)
         }
 
-        loadImage (url, title){
+        loadImage (url, title,altText){
             this.url = null;            
             const titleHTML = document.createElement("h4");
             const image = document.createElement("img");
@@ -342,7 +318,8 @@ console.log(option);
             if(getFileExtension(url)==="jpg"){         
                 image.onload = ()=>{
                     container.removeChild(loader);
-                    image.setAttribute("alt", title)
+                    image.setAttribute("title", title);
+                    image.setAttribute("alt", altText);
                     titleHTML.textContent=title;
                     container.appendChild(image);
                     container.appendChild(titleHTML);
@@ -359,6 +336,8 @@ console.log(option);
                     video.src = url;
                     video.setAttribute("controls", "controls")
                     video.setAttribute('role', 'button');
+                    video.setAttribute("title", title);
+                    video.setAttribute("alt", altText);
 
             }
 
@@ -384,14 +363,14 @@ console.log(option);
             e.preventDefault();
             let i = this.images.findIndex(image=>image === this.url);
             if (i === this.images.length-1){i = -1}
-            this.loadImage(this.images[i+1], this.titles[i+1]);
+            this.loadImage(this.images[i+1], this.titles[i+1], this.altTexts[i+1]);
         }
 
         prev(e){
             e.preventDefault();
             let i = this.images.findIndex(image=>image === this.url);
             if (i === 0){i = this.images.length}
-            this.loadImage(this.images[i-1], this.titles[i-1]);
+            this.loadImage(this.images[i-1], this.titles[i-1], this.altTexts[i+1]);
         }
 
         buildDOM (){
