@@ -406,6 +406,11 @@ main > #portofolio .filter-container .filter {
   z-index: 10;
   margin: 0;
 }
+@media (max-width: 1024px) {
+  main > #portofolio .filter-container .filter {
+    display: none;
+  }
+}
 main > #portofolio .filter-container .filter li {
   background: #901C1C;
   line-height: 57px;
@@ -420,6 +425,29 @@ main > #portofolio .filter-container .filter li {
 main > #portofolio .filter-container .filter li:hover, main > #portofolio .filter-container .filter li.is-selected {
   color: black;
   background: #D3573C;
+}
+main > #portofolio .filter-container .filter li:first-child {
+  border-radius: 5px;
+}
+main > #portofolio .filter-container .filter li:first-child.extend {
+  border-radius: 5px 5px 0 0;
+}
+main > #portofolio .filter-container .filter li:not(:first-child) {
+  position: relative;
+}
+main > #portofolio .filter-container .filter li:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: 7%;
+  top: 0;
+  height: 1px;
+  width: 86%;
+  /* or 100px */
+  border-top: 1px solid white;
+  margin: auto;
+}
+main > #portofolio .filter-container .filter li:last-child {
+  border-radius: 0 0 5px 5px;
 }
 main > #portofolio .filter-container .filter li.topFilterInMenu {
   position: relative;

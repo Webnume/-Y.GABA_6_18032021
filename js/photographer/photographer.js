@@ -86,9 +86,13 @@ export default function showPhotographerProfil (jsonObj) {
         const lastLis = document.querySelectorAll("li:not(.topFilterInMenu)");
         const imgArrow = document.querySelector(".arrow");
         let filterSelect =document.querySelector("#portofolio > article > ul > li.topFilterInMenu");   
+        var x = filterSelect.parentNode.getAttribute("aria-expanded"); 
+        x = (x==="true") ? "false" : "true" ;       
+        filterSelect.parentNode.setAttribute("aria-expanded", x); 
         media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
         lastLis.forEach((li)=>li.classList.toggle("hidden"));
-        imgArrow.classList.toggle("up");   
+        imgArrow.classList.toggle("up"); 
+        filterSelect.classList.toggle("extend");
         let valueSort ;
         if(event.target!==undefined){
             valueSort=event.target.textContent;
@@ -102,7 +106,7 @@ export default function showPhotographerProfil (jsonObj) {
             let temp = firstChildTextOnly.firstChild.textContent;
             firstChildTextOnly.firstChild.textContent=valueSort;
             firstChildTextOnly.id=valueSort;
-        lastLis.forEach((li)=>{if(li===activeElement){li.id=temp; li.textContent=temp}});
+             lastLis.forEach((li)=>{if(li===activeElement){li.id=temp; li.textContent=temp}});
             (!event.target) ? "" : event.target.textContent=temp;    
             (!event.target) ? "" : event.target.id=temp;       
         
@@ -146,10 +150,7 @@ export default function showPhotographerProfil (jsonObj) {
         });    
 
         const listbox = document.querySelector('[role="button"]')
-        const characters = [...listbox.children]  
-          var x = listbox.getAttribute("aria-expanded"); 
-          x = (x==="true") ? "false" : "true" ;       
-          listbox.setAttribute("aria-expanded", x);
+        const characters = [...listbox.children] 
         
         listbox.addEventListener('click', event => {
           const option = event.target.closest('li');
@@ -186,7 +187,8 @@ export default function showPhotographerProfil (jsonObj) {
         
             // Change visual appearance
             characters.forEach(element => element.classList.remove('is-selected'));
-            selectedOption.classList.add('is-selected'); 
+            selectedOption.classList.add('is-selected');            
+
           }
         })
 

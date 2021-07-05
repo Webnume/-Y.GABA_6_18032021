@@ -362,9 +362,9 @@ main {
         left: 80px;
         z-index: 10;        
         margin: 0;
-        // @media (max-width:1024px){
-        //   display: none;
-        // }
+        @media (max-width:1024px){
+          display: none;
+        }
         & li{
           background: $h1color;
           line-height: 57px;
@@ -378,6 +378,28 @@ main {
           &:hover,&.is-selected{
             color: darken($h1color , 70%);
             background: $h2color;
+          }
+          &:first-child{            
+            border-radius: 5px;
+            &.extend{
+              border-radius: 5px 5px 0 0;
+            }
+          }
+          &:not(:first-child){
+            position: relative;
+            &::before{
+              content : "";
+              position: absolute;
+              left    : 7%;
+              top  : 0;
+              height  : 1px;
+              width   : 86%;  /* or 100px */
+              border-top:1px solid white;
+              margin: auto;
+            }
+          }
+          &:last-child{
+            border-radius: 0 0 5px 5px;
           }
           &.topFilterInMenu{
             position: relative;
