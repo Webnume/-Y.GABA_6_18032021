@@ -277,7 +277,6 @@ main {
             display: block;
             margin-top: 7px;
             margin-bottom: 7px;
-            line-height: 0.3;
             opacity: 0;
             transition: 0.3s;
           }
@@ -295,9 +294,8 @@ main {
           & label{
             font-size: 27px;
             color: $greyspecial;
+            display: block;
             @media (max-width:1024px){
-              margin-top: 2rem;
-              margin-bottom: 1rem;
               font-size:24px;
             }
           }
@@ -496,12 +494,12 @@ main {
         right: 36px;
         background: url(../images/Lightbox-closer.svg) center center / 100% 100% no-repeat;
         border: none;
-        width:42px;
+        width:28px;
         height: 42px;
         z-index: 25;
         @media (max-width:1024px) {
-          top: 146px;
-          right: 18px;
+          top: 182px;
+          right: 13px;
           width: 17px;
           height: 17px;
         }
@@ -542,10 +540,10 @@ main {
           color: #901C1C;
         }           
         & img,video{
-          height: 67%;
+          height: 64%;
           @media(max-width:1024px){
             height: auto;
-            width: 125%;
+            width: 100%;
           }
         }
       }

@@ -1,4 +1,7 @@
 import formHandler from "./modal-form.js"; 
+import MediaFactory from "./media-factory.js";  
+import Lightbox from "./lightbox.js";
+
 export default function showPhotographerProfil (jsonObj) {
     // réupération de l'id de la page courante
     var myID = window.location.search.split("=").pop();
@@ -19,7 +22,7 @@ export default function showPhotographerProfil (jsonObj) {
     myPortofolioFilter.classList="filter-container";
     let filterContainer = document.createElement('ul');
     filterContainer.classList="filter"; 
-    let zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
+    var zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
     let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
     var hasclickedSession = [];
 
@@ -119,15 +122,15 @@ export default function showPhotographerProfil (jsonObj) {
                     return 0;
                 });
                 myPortofolioHTML.innerHTML="";
-                displayPortofolio ();
+                DisplayPortofolio ();
             }else if(filterSelect.textContent==="Date") {
                 media = media.sort((a,b) => new Date(b.date) - new Date(a.date));
                 myPortofolioHTML.innerHTML="";
-                displayPortofolio ();          
+                DisplayPortofolio ();          
             }else if(filterSelect.textContent==="Popularité") {                
                 media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
                 myPortofolioHTML.innerHTML="";   
-                displayPortofolio ();                            
+                DisplayPortofolio ();                            
             }         
         }
     }
@@ -197,7 +200,6 @@ export default function showPhotographerProfil (jsonObj) {
           
     }
 
-
     function heartLikesHandler(){  
         var hearts = document.querySelectorAll(".heart-likes"); 
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
@@ -225,55 +227,7 @@ export default function showPhotographerProfil (jsonObj) {
         }));
     }
 
-    function getFileExtension(filename) {
-        return filename.split('.').pop();
-    }
-
-    //Portofolio
-    function MediasFactory() {
-        this.createMedia = function (extension,mediaSingleID) {
-            // var media = this.media;
-            if (extension === "jpg") {
-                new Image(mediaSingleID);
-            } else if (extension === "mp4") {
-                new Video(mediaSingleID);
-            } 
-            heartLikesHandler(); 
-            lightboxHandler();
-            return media;    
-        }
-    }
-     
-    var Image = function (mediaSingleID) { 
-        this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
-        myPortofolioHTML.innerHTML  +=  `<article><img src="./images/${zeroSpaceFolder}/${this.med.image}" title="${this.med.title}" alt="${this.med.altText}" class="medias" tabindex="0"><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`; 
-
-    };
-     
-    var Video = function (mediaSingleID) {       
-        this.med = media.find( ({ id }) => id.toString() === mediaSingleID.toString() );
-
-        myPortofolioHTML.innerHTML  += `<article><video controls width="350px" height="300px" src="./images/${zeroSpaceFolder}/${this.med.video}" type="video/mp4" class="medias" alt="${this.med.altText}">Sorry, your browser doesn't support embedded videos.</video><h4>${this.med.title}</h4><span>${this.med.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes"></article>`;               
-    };   
-    
-    function displayPortofolio() {
-        var factory = new MediasFactory();
-        var extension ;
-        var mediaSingleID;
-        media.map(med=>{
-            extension = med.image ?  getFileExtension(med.image) : getFileExtension(med.video);
-            if (extension==="jpg"){
-                mediaSingleID = med.id;
-                factory.createMedia("jpg",mediaSingleID); 
-            }else if (extension==="mp4"){
-                mediaSingleID = med.id;
-                factory.createMedia("mp4",mediaSingleID);
-
-            }
-        }) 
-    }
-
-    // LightBox
+ // LightBox
     function lightboxHandler(){
         const links = Array.from(document.querySelectorAll('.medias'));    
         const gallery = links.map(link=>link.getAttribute('src'));
@@ -291,108 +245,17 @@ export default function showPhotographerProfil (jsonObj) {
             }
         }))
     }
-   
-    class Lightbox {
 
-        constructor(url ,images, title, titles,altText,altTexts){
-            this.element = this.buildDOM();
-            this.images = images;
-            this.titles=titles;
-            this.altTexts=altTexts;
-            this.loadImage(url, title,altText);
-            this.onKeyUp=this.onKeyUp.bind(this);
-            portofolio.appendChild(this.element);
-            document.addEventListener('keyup',this.onKeyUp)
+    function DisplayPortofolio() {
+       var portofolio = []
+       for (var i = 0; i < media.length; i++) { 
+            portofolio[i]= new MediaFactory(document.querySelector(".container"),{test:"kljkljkljl",zeroSpaceFolder,photographerId:media[i].photographerId, title:media[i].title, image:(media[i].image ?  media[i].image : media[i].video ) , tags:media[i].tags, likes:media[i].likes, date:media[i].date, price:media[i].price, altText:media[i].altText});
         }
-
-        loadImage (url, title,altText){
-            this.url = null;            
-            const titleHTML = document.createElement("h4");
-            const image = document.createElement("img");
-            const video = document.createElement("video");
-            const container = this.element.querySelector('.lightbox__container');
-            const loader = document.createElement('div');
-            loader.classList.add("lightbox__loader");
-            container.innerHTML = '';
-            container.appendChild(loader);
-            // titleHTML.textContent=title;
-
-            if(getFileExtension(url)==="jpg"){         
-                image.onload = ()=>{
-                    container.removeChild(loader);
-                    image.setAttribute("title", title);
-                    image.setAttribute("alt", altText);
-                    titleHTML.textContent=title;
-                    container.appendChild(image);
-                    container.appendChild(titleHTML);
-                    this.url = url ;                
-                }
-                image.src = url;
-            }
-            else if(getFileExtension(url)==="mp4"){     
-                    container.removeChild(loader);
-                    container.appendChild(video);
-                    titleHTML.textContent=title;
-                    container.appendChild(titleHTML);
-                    this.url = url ; 
-                    video.src = url;
-                    video.setAttribute("controls", "controls")
-                    video.setAttribute('role', 'button');
-                    video.setAttribute("title", title);
-                    video.setAttribute("alt", altText);
-
-            }
-
-        }
-
-        onKeyUp (e){
-            if(e.key==="Escape"){
-                this.close(e);
-            }else if (e.key==='ArrowLeft'){
-                this.prev(e)
-            }else if (e.key==='ArrowRight'){
-                this.next(e)
-            }
-        }
-
-        close(e){
-            e.preventDefault();
-            this.element.parentElement.removeChild(this.element);
-            document.removeEventListener('keyup', this.onKeyUp);
-        }
-        
-        next(e){
-            e.preventDefault();
-            let i = this.images.findIndex(image=>image === this.url);
-            if (i === this.images.length-1){i = -1}
-            this.loadImage(this.images[i+1], this.titles[i+1], this.altTexts[i+1]);
-        }
-
-        prev(e){
-            e.preventDefault();
-            let i = this.images.findIndex(image=>image === this.url);
-            if (i === 0){i = this.images.length}
-            this.loadImage(this.images[i-1], this.titles[i-1], this.altTexts[i+1]);
-        }
-
-        buildDOM (){
-            const dom = document.createElement('div');
-            dom.setAttribute("aria-label","image closeup view");
-            dom.classList.add("lightbox");
-            dom.innerHTML=`
-            <button class="lightbox__closer" aria-label="Close dialog"></button>
-            <button class="lightbox__next"  aria-label="Next image"></button>                
-            <button class="lightbox__prev"  aria-label="Previous image"></button>
-            <div class="lightbox__container"></div>
-            </div>`;
-            dom.querySelector('.lightbox__closer').addEventListener('click', this.close.bind(this));
-            dom.querySelector('.lightbox__next').addEventListener('click', this.next.bind(this));
-            dom.querySelector('.lightbox__prev').addEventListener('click', this.prev.bind(this));
-            return dom;
-        }
-
-    }
-       
+        heartLikesHandler()
+    }   
     displayBanner();
-    displayPortofolio();
+    DisplayPortofolio();
+    lightboxHandler();
+
+
 }

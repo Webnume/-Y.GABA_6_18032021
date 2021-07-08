@@ -318,7 +318,6 @@ main > #banner article #form-modal form .formData[data-error]::after {
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;
-  line-height: 0.3;
   opacity: 0;
   transition: 0.3s;
 }
@@ -336,11 +335,10 @@ main > #banner article #form-modal form input[data-error]::after {
 main > #banner article #form-modal form label {
   font-size: 27px;
   color: #312E2E;
+  display: block;
 }
 @media (max-width: 1024px) {
   main > #banner article #form-modal form label {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
     font-size: 24px;
   }
 }
@@ -544,14 +542,14 @@ main > #portofolio .lightbox .lightbox__closer {
   right: 36px;
   background: url(../images/Lightbox-closer.svg) center center/100% 100% no-repeat;
   border: none;
-  width: 42px;
+  width: 28px;
   height: 42px;
   z-index: 25;
 }
 @media (max-width: 1024px) {
   main > #portofolio .lightbox .lightbox__closer {
-    top: 146px;
-    right: 18px;
+    top: 182px;
+    right: 13px;
     width: 17px;
     height: 17px;
   }
@@ -595,12 +593,12 @@ main > #portofolio .lightbox .lightbox__container h4 {
   color: #901C1C;
 }
 main > #portofolio .lightbox .lightbox__container img, main > #portofolio .lightbox .lightbox__container video {
-  height: 67%;
+  height: 64%;
 }
 @media (max-width: 1024px) {
   main > #portofolio .lightbox .lightbox__container img, main > #portofolio .lightbox .lightbox__container video {
     height: auto;
-    width: 125%;
+    width: 100%;
   }
 }
 
