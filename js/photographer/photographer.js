@@ -104,7 +104,6 @@ export default function showPhotographerProfil (jsonObj) {
         }
         if(valueSort!==filterSelect.textContent && valueSort!==""){
 
-        // lastLis.forEach((li)=>li.classList.toggle("hidden"));
             let firstChildTextOnly = document.querySelector(".filter :not(img)");
             let temp = firstChildTextOnly.firstChild.textContent;
             firstChildTextOnly.firstChild.textContent=valueSort;
@@ -122,17 +121,17 @@ export default function showPhotographerProfil (jsonObj) {
                     return 0;
                 });
                 myPortofolioHTML.innerHTML="";
-                DisplayPortofolio ();
             }else if(filterSelect.textContent==="Date") {
                 media = media.sort((a,b) => new Date(b.date) - new Date(a.date));
-                myPortofolioHTML.innerHTML="";
-                DisplayPortofolio ();          
+                myPortofolioHTML.innerHTML="";        
             }else if(filterSelect.textContent==="Popularité") {                
                 media = media.sort((a, b) =>parseInt(b.likes, 10) - parseInt(a.likes, 10) ); 
-                myPortofolioHTML.innerHTML="";   
-                DisplayPortofolio ();                            
+                myPortofolioHTML.innerHTML="";            
             }         
         }
+            displayPortofolio();;                  
+            lightboxHandler();
+            heartLikesHandler()
     }
       
     function filterMenuDisplay () {
@@ -246,16 +245,17 @@ export default function showPhotographerProfil (jsonObj) {
         }))
     }
 
-    function DisplayPortofolio() {
+    function displayPortofolio() {
        var portofolio = []
        for (var i = 0; i < media.length; i++) { 
             portofolio[i]= new MediaFactory(document.querySelector(".container"),{test:"kljkljkljl",zeroSpaceFolder,photographerId:media[i].photographerId, title:media[i].title, image:(media[i].image ?  media[i].image : media[i].video ) , tags:media[i].tags, likes:media[i].likes, date:media[i].date, price:media[i].price, altText:media[i].altText});
         }
-        heartLikesHandler()
     }   
+    
     displayBanner();
-    DisplayPortofolio();
+    displayPortofolio();
     lightboxHandler();
+    heartLikesHandler();
 
 
 }
