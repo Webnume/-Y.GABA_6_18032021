@@ -125,7 +125,8 @@ main {
         width: 100%;
         align-items: flex-start;
         & .infos{
-          & h2{
+          & h1{
+            position: unset;
             color: $h2color;
             font-style: normal;
             font-weight: normal;

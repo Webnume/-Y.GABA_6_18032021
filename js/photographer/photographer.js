@@ -10,28 +10,30 @@ export default function showPhotographerProfil (jsonObj) {
     var photographer = photographers.find( ({ id }) => id.toString() === myID );
     var medias = jsonObj.media;
     var media = medias.filter( ({ photographerId }) => photographerId.toString() === myID );
+    var zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
+    // Variable globale de la fonction heartLikesHandler
+    let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
+    var hasclickedSession = [];
+
     //DOM
     var banner = document.getElementById('banner');
     var portofolio = document.getElementById('portofolio');
     let myPortofolioHTML = document.createElement('div');
     myPortofolioHTML.classList="container";
-    // Banner
     var myArticleBanner = document.createElement('article');
-    // Portofolio
     var myPortofolioFilter = document.createElement('article');
     myPortofolioFilter.classList="filter-container";
     let filterContainer = document.createElement('ul');
     filterContainer.classList="filter"; 
-    var zeroSpaceFolder=(photographer.name).replace(/ +/g, "");
-    let allLikesSum = media.map(medi => medi.likes).reduce((acc, medi) => medi + acc);
-    var hasclickedSession = [];
+
+    //
 
     function displayBanner(){
         var tags = photographer.tags;
         myArticleBanner.innerHTML = 
         `<section>         
             <div class="infos">
-                <h2>${photographer.name}</h2>
+                <h1>${photographer.name}</h1>
                 <p>${photographer.city}, ${photographer.country}</p>
                 <p class="tagline">${photographer.tagline}</p>
                 <ul>
@@ -85,6 +87,7 @@ export default function showPhotographerProfil (jsonObj) {
         formHandler (); 
     }
 
+    // gestion du tri des résultats en fonction du menu
     function mediaSort(event,activeElement){
         const lastLis = document.querySelectorAll("li:not(.topFilterInMenu)");
         const imgArrow = document.querySelector(".arrow");
@@ -129,15 +132,13 @@ export default function showPhotographerProfil (jsonObj) {
                 myPortofolioHTML.innerHTML="";            
             }         
         }
-            displayPortofolio();;                  
+            displayPortofolio();                  
             lightboxHandler();
             heartLikesHandler()
     }
       
+    // Affichage du menu de tri
     function filterMenuDisplay () {
-        //  role=”button”, aria-haspopup=”listbox”, aria-expanded. 
-        // Liste d’options : role=”listbox”, aria-activedescendant, aria-selected, aria-labelledby qui pointe vers l’input label
-
         myPortofolioFilter.innerHTML=`  
         <h4 id="orderBy">Trier par</h4>
         <ul class="filter" aria-labelledby="orderBy" role="button" aria-haspopup="listbox", aria-expanded="false" tabindex="0" aria-activedescendant="Popularité">
@@ -170,7 +171,6 @@ export default function showPhotographerProfil (jsonObj) {
           option.setAttribute("aria-selected", "true")
         })
         
-        
         listbox.addEventListener('keydown', event => {
           const { key } = event 
           if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'Enter') return
@@ -199,6 +199,7 @@ export default function showPhotographerProfil (jsonObj) {
           
     }
 
+    //Gestion des likes
     function heartLikesHandler(){  
         var hearts = document.querySelectorAll(".heart-likes"); 
         hearts.forEach(heart=>heart.addEventListener("click", (event) =>{media.map(medi=>  {
@@ -226,7 +227,7 @@ export default function showPhotographerProfil (jsonObj) {
         }));
     }
 
- // LightBox
+    // LightBox
     function lightboxHandler(){
         const links = Array.from(document.querySelectorAll('.medias'));    
         const gallery = links.map(link=>link.getAttribute('src'));
@@ -245,6 +246,7 @@ export default function showPhotographerProfil (jsonObj) {
         }))
     }
 
+    // Affichage du portofolio
     function displayPortofolio() {
        var portofolio = []
        for (var i = 0; i < media.length; i++) { 
@@ -252,6 +254,7 @@ export default function showPhotographerProfil (jsonObj) {
         }
     }   
     
+    // Lancement des fonctions au démarrage de la page.
     displayBanner();
     displayPortofolio();
     lightboxHandler();

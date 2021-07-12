@@ -130,7 +130,8 @@ main > #banner article section {
   width: 100%;
   align-items: flex-start;
 }
-main > #banner article section .infos h2 {
+main > #banner article section .infos h1 {
+  position: unset;
   color: #D3573C;
   font-style: normal;
   font-weight: normal;
@@ -139,7 +140,7 @@ main > #banner article section .infos h2 {
   margin: 0;
 }
 @media (max-width: 1024px) {
-  main > #banner article section .infos h2 {
+  main > #banner article section .infos h1 {
     font-size: 36px;
     line-height: 35px;
   }

@@ -17,10 +17,23 @@ export default class MediaFactory{
     this.render();
   }
 
+
+  /**
+   * met à jour le composant dans le DOM
+   *
+   * @return  {void}  change le contenu du DoM
+   */
   render(){
     this.DOM.innerHTML = (this.getFileExtension(this.image)==="jpg") ?  this.templateImg() : this.templateVideo();
   }
  
+  /**
+   * extrait l'extension d'un nom de fichier
+   *
+   * @param   {String}  filename  un nom de fichier
+   *
+   * @return  {String}            l'extension
+   */
   getFileExtension(filename) {
     return filename.split('.').pop();
   }
@@ -36,5 +49,6 @@ export default class MediaFactory{
       <img src="./images/${this.zeroSpaceFolder}/${this.image}" title="${this.title}" alt="${this.altText}" class="medias" tabindex="0"><h4>${this.title}</h4><span>${this.likes}</span><img  class="heart-likes" src="./images/heart-solid.svg" alt="likes">
     `;
   }
+
 
 }
