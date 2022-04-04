@@ -11,7 +11,7 @@ body {
   width: 80%;
   justify-content: center;
   align-items: center;
-  font-family: DM Sans;
+  font-family: DM Sans, sans-serif;
   min-width: 370px;
 }
 @media (max-width: 1265px) {
@@ -147,7 +147,6 @@ article div {
   border-radius: 50%;
   width: 200px;
   height: 200px;
-  border-radius: 50%;
   overflow: hidden;
 }
 article div img {
@@ -175,7 +174,6 @@ article p:nth-child(3) {
   color: #901C1C;
   font-size: 13px;
   font-style: normal;
-  font-weight: 400;
   line-height: 17px;
   letter-spacing: 0em;
   font-weight: 700;
