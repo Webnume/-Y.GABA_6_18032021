@@ -271,7 +271,7 @@ export default function showPhotographerProfil(jsonObj) {
     links.forEach((link) =>
       link.addEventListener("click", (e) => {
         e.preventDefault();
-        new Lightbox(
+        return new Lightbox(
           e.currentTarget.getAttribute("src"),
           gallery,
           e.currentTarget.parentNode.parentNode.querySelector("h4").textContent,
@@ -285,7 +285,7 @@ export default function showPhotographerProfil(jsonObj) {
       link.addEventListener("keyup", (event) => {
         event.preventDefault();
         if (event.key === "Enter") {
-          new Lightbox(
+          return new Lightbox(
             event.currentTarget.getAttribute("src"),
             gallery,
             event.currentTarget.parentNode.querySelector("h4").textContent,
