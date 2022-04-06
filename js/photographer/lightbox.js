@@ -25,7 +25,6 @@ export default class Lightbox {
         loader.classList.add("lightbox__loader");
         container.innerHTML = '';
         container.appendChild(loader);
-        // titleHTML.textContent=title;
 
         if(this.getFileExtension(url)==="jpg"){         
             image.onload = ()=>{

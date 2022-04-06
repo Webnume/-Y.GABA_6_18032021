@@ -130,12 +130,12 @@ export default function showPhotographerProfil(jsonObj) {
 
       if (filterSelect.textContent === "Titre") {
         media = media.sort(function (a, b) {
-          let x = a.title.toLowerCase();
-          let y = b.title.toLowerCase();
-          if (x < y) {
+          let medX = a.title.toLowerCase();
+          let medY = b.title.toLowerCase();
+          if (medX < medY) {
             return -1;
           }
-          if (x > y) {
+          if (medX > medY) {
             return 1;
           }
           return 0;
@@ -239,7 +239,6 @@ export default function showPhotographerProfil(jsonObj) {
               "#banner > article > p.priceBottom > span:nth-child(1)"
             ).innerHTML = allLikesSum;
             hasclickedSession.push(altTarget);
-            // debugger
           } else if (
             medi.title === altTarget &&
             hasclickedSession.includes(altTarget)
@@ -300,9 +299,8 @@ export default function showPhotographerProfil(jsonObj) {
 
   // Affichage du portofolio
   function displayPortofolio() {
-    var portofolio = [];
     for (var i = 0; i < media.length; i++) {
-      portofolio[i] = new MediaFactory(document.querySelector(".container"), {
+      new MediaFactory(document.querySelector(".container"), {
         test: "kljkljkljl",
         zeroSpaceFolder,
         photographerId: media[i].photographerId,

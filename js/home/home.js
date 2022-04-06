@@ -1,5 +1,4 @@
 export default function home(jsonObj) {
-  // console.log(jsonObj);
   let myNav = document.querySelector("nav");
   let section = document.querySelector("section");
   let photographers = jsonObj;
@@ -86,7 +85,7 @@ export default function home(jsonObj) {
   }
 
   // mainContent
-  function mainDisplay(photographers) {
+  function mainDisplay() {
     section.innerHTML = "<h1>Nos photographes</h1>";
     photographers.map((photographer) => {
       let myArticle = document.createElement("article");
@@ -131,6 +130,6 @@ export default function home(jsonObj) {
 
   //Starting here
   navigationDisplay(myNav, tagsTab);
-  mainDisplay(photographers);
+  mainDisplay();
   clickAndKeyboardHandler();
 }

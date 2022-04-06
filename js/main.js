@@ -16,6 +16,7 @@ fetch("FishEyeData.json")
     }
   })
   .catch(function(err) {
+    console.log(err);
     // Une erreur est survenue
   });
 
