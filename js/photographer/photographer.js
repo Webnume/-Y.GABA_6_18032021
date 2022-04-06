@@ -125,8 +125,8 @@ export default function showPhotographerProfil(jsonObj) {
           li.textContent = temp;
         }
       });
-      !event.target ? "" : (event.target.textContent = temp);
-      !event.target ? "" : (event.target.id = temp);
+      event.target.textContent = !event.target ? "" : temp;
+      event.target.id = !event.target ? "" : temp;
 
       if (filterSelect.textContent === "Titre") {
         media = media.sort(function (a, b) {
