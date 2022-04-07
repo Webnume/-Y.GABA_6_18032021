@@ -32,22 +32,30 @@ export default function home(jsonObj) {
     return str.substring(1).toLowerCase();
   }
 
-  // filter on tag click
-  function tagFilter(event, li) {
-    if (tagsArray.includes(substringTolowercase(event.target.textContent))) {
-      for (var i = 0; i < tagsArray.length; i++) {
-        if (tagsArray[i] === substringTolowercase(li.textContent)) {
-          tagsArray.splice(i, 1);
-        }
+  function spliceArray(arr, li) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === substringTolowercase(li.textContent)) {
+        arr.splice(i, 1);
       }
-    } else if (!tagsArray.includes(li.textContent.toLowerCase())) {
-      tagsArray.push(substringTolowercase(li.textContent));
     }
-    for (const a of document.querySelectorAll("li")) {
+  }
+
+  function classListHandler(arr) {
+    for (const a of arr) {
       a.classList = tagsArray.includes(substringTolowercase(a.textContent))
         ? "up"
         : "";
     }
+  }
+
+  // filter on tag click
+  function tagFilter(event, li) {
+    if (tagsArray.includes(substringTolowercase(event.target.textContent))) {
+      spliceArray(tagsArray, li);
+    } else if (!tagsArray.includes(li.textContent.toLowerCase())) {
+      tagsArray.push(substringTolowercase(li.textContent));
+    }
+    classListHandler(document.querySelectorAll("li"));
 
     [...myArticles].forEach((article) => {
       for (let photographer of photographers) {
