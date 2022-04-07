@@ -14,7 +14,7 @@ body {
   width: 80%;
   justify-content: center;
   align-items: center;
-  font-family: "DM Sans", sans-serif;
+  font-family: DM Sans, sans-serif;
   min-width: 370px;
 }
 @media (max-width: 1265px) {
@@ -184,7 +184,7 @@ main > #banner article section .infos ul li:hover, main > #banner article sectio
 main > #banner article section .contactButton {
   border: none;
   background: #911C1C;
-  font-family: "DM Sans", sans-serif;
+  font-family: DM Sans, sans-serif;
   font-weight: bold;
   font-size: 18px;
   line-height: 23px;
@@ -380,6 +380,7 @@ main > #portofolio {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 main > #portofolio .filter-container {
   display: flex;
@@ -463,16 +464,14 @@ main > #portofolio .filter-container .filter .hidden {
   display: none;
 }
 main > #portofolio .container {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1 0 100%;
-  flex-basis: 100%;
-  justify-content: space-between;
-  padding-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1rem;
 }
 @media (max-width: 1024px) {
   main > #portofolio .container {
     justify-content: center;
+    grid-template-columns: 1fr;
   }
 }
 main > #portofolio .container article {

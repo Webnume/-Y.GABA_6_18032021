@@ -339,6 +339,7 @@ main {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
     & .filter-container{
       display: flex;
       & h4{
@@ -419,14 +420,14 @@ main {
 
     }
     & .container{
-      display: flex;
-      flex-wrap: wrap;
-      flex: 1 0 100%;
-      flex-basis: 100%;
-      justify-content: space-between;
-      padding-bottom: 2rem;        
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 1rem;
+
+         
       @media (max-width:1024px){
         justify-content: center;
+        grid-template-columns: 1fr;
       }
 
       & article{

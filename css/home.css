@@ -144,9 +144,9 @@ article div {
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
-  border-radius: 50%;
   width: 200px;
   height: 200px;
+  border-radius: 50%;
   overflow: hidden;
 }
 article div img {

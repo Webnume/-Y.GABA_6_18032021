@@ -299,18 +299,18 @@ export default function showPhotographerProfil(jsonObj) {
 
   // Affichage du portofolio
   function displayPortofolio() {
-    for (var i = 0; i < media.length; i++) {
+    for (let med of media) {
       try {
         new MediaFactory(document.querySelector(".container"), {
           zeroSpaceFolder,
-          photographerId: media[i].photographerId,
-          title: media[i].title,
-          image: media[i].image ? media[i].image : media[i].video,
-          tags: media[i].tags,
-          likes: media[i].likes,
-          date: media[i].date,
-          price: media[i].price,
-          altText: media[i].altText,
+          photographerId: med.photographerId,
+          title: med.title,
+          image: med.image ? med.image : med.video,
+          tags: med.tags,
+          likes: med.likes,
+          date: med.date,
+          price: med.price,
+          altText: med.altText,
         });
       } catch (e) {
         console.log(e);
