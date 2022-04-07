@@ -300,18 +300,21 @@ export default function showPhotographerProfil(jsonObj) {
   // Affichage du portofolio
   function displayPortofolio() {
     for (var i = 0; i < media.length; i++) {
-      new MediaFactory(document.querySelector(".container"), {
-        test: "kljkljkljl",
-        zeroSpaceFolder,
-        photographerId: media[i].photographerId,
-        title: media[i].title,
-        image: media[i].image ? media[i].image : media[i].video,
-        tags: media[i].tags,
-        likes: media[i].likes,
-        date: media[i].date,
-        price: media[i].price,
-        altText: media[i].altText,
-      });
+      try {
+        new MediaFactory(document.querySelector(".container"), {
+          zeroSpaceFolder,
+          photographerId: media[i].photographerId,
+          title: media[i].title,
+          image: media[i].image ? media[i].image : media[i].video,
+          tags: media[i].tags,
+          likes: media[i].likes,
+          date: media[i].date,
+          price: media[i].price,
+          altText: media[i].altText,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
