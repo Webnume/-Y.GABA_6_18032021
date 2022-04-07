@@ -28,25 +28,25 @@ export default function home(jsonObj) {
     });
   }
 
+  function substringTolowercase(str) {
+    return str.substring(1).toLowerCase();
+  }
+
   // filter on tag click
   function tagFilter(event, li) {
-    if (
-      tagsArray.includes(event.target.textContent.substring(1).toLowerCase())
-    ) {
+    if (tagsArray.includes(substringTolowercase(event.target.textContent))) {
       for (var i = 0; i < tagsArray.length; i++) {
-        if (tagsArray[i] === li.textContent.substring(1).toLowerCase()) {
+        if (tagsArray[i] === substringTolowercase(li.textContent)) {
           tagsArray.splice(i, 1);
         }
       }
     } else if (!tagsArray.includes(li.textContent.toLowerCase())) {
-      tagsArray.push(li.textContent.substring(1).toLowerCase());
+      tagsArray.push(substringTolowercase(li.textContent));
     }
     for (const a of document.querySelectorAll("li")) {
-      if (tagsArray.includes(a.textContent.substring(1).toLowerCase())) {
-        a.classList = "up";
-      } else {
-        a.classList = "";
-      }
+      a.classList = tagsArray.includes(substringTolowercase(a.textContent))
+        ? "up"
+        : "";
     }
 
     [...myArticles].forEach((article) => {
